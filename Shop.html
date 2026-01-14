@@ -1,0 +1,1274 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Shop - SelfieTape Precision Measuring Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-1: #05294a;    /* deep sea */
+      --bg-2: #046582;    /* turquoise */
+      --accent: #ffd166;  /* warm highlight */
+      --glass: rgba(255,255,255,0.06);
+      --card: rgba(255,255,255,0.04);
+    }
+
+    /* Reset + base */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      color: #e6f7ff;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(4,101,130,0.18), transparent 5%), linear-gradient(180deg,var(--bg-1),var(--bg-2));
+      overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      cursor: none; /* we'll draw a custom circular cursor */
+    }
+
+    /* Page layout */
+    .wrap{min-height:100vh;display:flex;flex-direction:column}
+    header{
+      padding:40px 6vw 30px 6vw;
+      display:flex;align-items:center;justify-content:space-between;gap:20px;
+    }
+    .brand{display:flex;align-items:center;gap:14px}
+    .logo{
+      width:54px;height:54px;border-radius:12px;background:linear-gradient(135deg,#03a9f4,#00bcd4);display:flex;align-items:center;justify-content:center;font-weight:800;color:white;box-shadow:0 6px 18px rgba(2,40,60,0.45);
+    }
+    h1{font-family:'Playfair Display', serif;margin:0;font-size:clamp(20px,3.2vw,34px);letter-spacing:-0.02em}
+    nav{display:flex;gap:18px;align-items:center}
+    nav a{color:rgba(230,247,255,0.9);text-decoration:none;font-weight:600;padding:8px 12px;border-radius:10px}
+    nav a:hover{background:rgba(255,255,255,0.03)}
+    nav a.active{background:rgba(255,255,255,0.08);color:var(--accent)}
+
+    /* Shop Hero */
+    .shop-hero{
+      padding:40px 6vw 60px 6vw;
+      text-align:center;
+      position:relative;
+    }
+    .shop-hero h2{
+      font-size:clamp(28px,4.5vw,48px);
+      margin:0 0 16px 0;
+      font-family:'Playfair Display', serif;
+    }
+    .shop-hero p{
+      max-width:600px;
+      margin:0 auto 30px;
+      line-height:1.6;
+      color:rgba(230,247,255,0.85);
+    }
+
+    /* Shop Layout */
+    .shop-container{
+      display:flex;
+      gap:30px;
+      padding:0 6vw 80px;
+    }
+
+    /* Filters Sidebar */
+    .filters{
+      width:280px;
+      flex-shrink:0;
+    }
+    .filter-card{
+      background:var(--glass);
+      border-radius:14px;
+      padding:20px;
+      margin-bottom:20px;
+      border:1px solid rgba(255,255,255,0.03);
+      backdrop-filter:blur(6px);
+    }
+    .filter-card h3{
+      margin-top:0;
+      margin-bottom:16px;
+      font-size:18px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .filter-options{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .filter-option{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      cursor:pointer;
+    }
+    .filter-option input{
+      margin:0;
+    }
+    .price-range{
+      width:100%;
+      margin:10px 0;
+    }
+
+    /* Products Grid */
+    .products{
+      flex:1;
+    }
+    .products-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:24px;
+    }
+    .sort-select{
+      background:var(--glass);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:8px;
+      padding:8px 12px;
+      color:white;
+      font-family:inherit;
+    }
+    .products-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));
+      gap:24px;
+    }
+
+    /* Product Card */
+    .product-card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:14px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.03);
+      transition:transform 0.3s ease, box-shadow 0.3s ease;
+      backdrop-filter:blur(6px);
+    }
+    .product-card:hover{
+      transform:translateY(-5px);
+      box-shadow:0 12px 28px rgba(2,30,50,0.6);
+    }
+    .product-image{
+      height:180px;
+      background:linear-gradient(135deg, rgba(3,169,244,0.2), rgba(0,188,212,0.2));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      overflow:hidden;
+    }
+    .product-image img{
+      max-width:80%;
+      max-height:80%;
+      object-fit:contain;
+    }
+    .product-badge{
+      position:absolute;
+      top:12px;
+      right:12px;
+      background:var(--accent);
+      color:#002029;
+      font-size:12px;
+      font-weight:700;
+      padding:4px 8px;
+      border-radius:6px;
+    }
+    .product-info{
+      padding:18px;
+    }
+    .product-info h3{
+      margin:0 0 8px 0;
+      font-size:18px;
+    }
+    .product-description{
+      color:rgba(230,247,255,0.75);
+      font-size:14px;
+      margin-bottom:16px;
+      line-height:1.5;
+    }
+    .product-price{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin-bottom:16px;
+    }
+    .current-price{
+      font-size:20px;
+      font-weight:700;
+      color:var(--accent);
+    }
+    .original-price{
+      text-decoration:line-through;
+      color:rgba(230,247,255,0.5);
+      font-size:14px;
+    }
+    .add-to-cart{
+      width:100%;
+      padding:10px;
+      background:linear-gradient(90deg,var(--accent),#ffb347);
+      color:#002029;
+      border:none;
+      border-radius:8px;
+      font-weight:600;
+      cursor:pointer;
+      transition:all 0.2s ease;
+    }
+    .add-to-cart:hover{
+      transform:translateY(-2px);
+      box-shadow:0 6px 12px rgba(255,153,51,0.2);
+    }
+
+    /* Cart */
+    .cart-icon{
+      position:relative;
+      cursor:pointer;
+    }
+    .cart-count{
+      position:absolute;
+      top:-8px;
+      right:-8px;
+      background:var(--accent);
+      color:#002029;
+      font-size:12px;
+      font-weight:700;
+      width:20px;
+      height:20px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    /* Cart Modal */
+    .cart-modal{
+      position:fixed;
+      top:0;
+      right:-400px;
+      width:380px;
+      height:100vh;
+      background:linear-gradient(180deg, var(--bg-1), var(--bg-2));
+      box-shadow:-5px 0 25px rgba(0,0,0,0.3);
+      z-index:10000;
+      transition:right 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+      display:flex;
+      flex-direction:column;
+      border-left:1px solid rgba(255,255,255,0.05);
+    }
+    .cart-modal.open{
+      right:0;
+    }
+    .cart-header{
+      padding:24px;
+      border-bottom:1px solid rgba(255,255,255,0.08);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .close-cart{
+      background:none;
+      border:none;
+      color:white;
+      font-size:24px;
+      cursor:pointer;
+      padding:0;
+      width:30px;
+      height:30px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .cart-items{
+      flex:1;
+      padding:20px;
+      overflow-y:auto;
+    }
+    .cart-item{
+      display:flex;
+      gap:16px;
+      padding:16px 0;
+      border-bottom:1px solid rgba(255,255,255,0.05);
+    }
+    .cart-item-image{
+      width:70px;
+      height:70px;
+      background:rgba(255,255,255,0.05);
+      border-radius:8px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .cart-item-details{
+      flex:1;
+    }
+    .cart-item-details h4{
+      margin:0 0 6px 0;
+    }
+    .cart-item-price{
+      color:var(--accent);
+      font-weight:600;
+    }
+    .cart-item-controls{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-top:8px;
+    }
+    .quantity-btn{
+      width:28px;
+      height:28px;
+      border-radius:50%;
+      border:none;
+      background:rgba(255,255,255,0.1);
+      color:white;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+    }
+    .cart-footer{
+      padding:24px;
+      border-top:1px solid rgba(255,255,255,0.08);
+    }
+    .cart-total{
+      display:flex;
+      justify-content:space-between;
+      margin-bottom:20px;
+      font-size:18px;
+      font-weight:600;
+    }
+    .checkout-btn{
+      width:100%;
+      padding:14px;
+      background:linear-gradient(90deg,var(--accent),#ffb347);
+      color:#002029;
+      border:none;
+      border-radius:10px;
+      font-weight:700;
+      font-size:16px;
+      cursor:pointer;
+      transition:all 0.2s ease;
+    }
+    .checkout-btn:hover{
+      transform:translateY(-2px);
+      box-shadow:0 6px 12px rgba(255,153,51,0.3);
+    }
+
+    /* Overlay */
+    .overlay{
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      background:rgba(0,0,0,0.5);
+      z-index:9999;
+      opacity:0;
+      visibility:hidden;
+      transition:opacity 0.3s ease;
+    }
+    .overlay.active{
+      opacity:1;
+      visibility:visible;
+    }
+
+    /* Wave footer + decorative */
+    .ocean{position:relative;height:240px;margin-top:auto}
+    .waves{position:absolute;left:0;right:0;bottom:0}
+
+    /* Floating bubbles */
+    .bubble{position:absolute;border-radius:50%;opacity:0.18;mix-blend-mode:screen}
+    .bubble.b1{width:140px;height:140px;left:4vw;top:40vh;background:linear-gradient(180deg,#7be7ff55,#035a7a55);animation:floaty 8s ease-in-out infinite}
+    .bubble.b2{width:90px;height:90px;left:28vw;top:30vh;background:linear-gradient(180deg,#64d6ff44,#03788a33);animation:floaty 10s ease-in-out infinite;animation-delay:0.6s}
+    .bubble.b3{width:60px;height:60px;left:70vw;top:20vh;background:linear-gradient(180deg,#aaffff33,#036b8b33);animation:floaty 12s ease-in-out infinite;animation-delay:1.4s}
+
+    @keyframes floaty{0%{transform:translateY(0)}50%{transform:translateY(-22px)}100%{transform:translateY(0)}}
+
+    /* Footer */
+    footer{padding:28px 6vw;color:rgba(230,247,255,0.75);display:flex;justify-content:space-between;align-items:center}
+
+    /* Responsive tweaks */
+    @media (max-width:900px){
+      .shop-container{
+        flex-direction:column;
+      }
+      .filters{
+        width:100%;
+      }
+      .cart-modal{
+        width:100%;
+        right:-100%;
+      }
+      nav{display:none}
+    }
+
+    /* --- Cursor styles --- */
+    .cursor{
+      position:fixed;left:0;top:0;transform:translate(-50%,-50%);width:36px;height:36px;border-radius:50%;pointer-events:none;z-index:9999;mix-blend-mode:screen;backdrop-filter: blur(2px);
+      display:flex;align-items:center;justify-content:center;transition:width .12s ease,height .12s ease,opacity .12s ease,transform .12s ease;
+      border:2px solid rgba(255,255,255,0.14);background:radial-gradient(circle at 40% 30%, rgba(255,255,255,0.12), rgba(0,0,0,0.1));
+      box-shadow:0 6px 18px rgba(2,40,60,0.45);
+    }
+    .cursor .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 4px 10px rgba(255,209,102,0.18)}
+    .cursor.hidden{opacity:0}
+    .cursor.big{width:86px;height:86px}
+
+    /* clickable feedback area */
+    .pulse{position:fixed;border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:0}
+
+    /* small utility */
+    .muted{opacity:0.8;font-size:14px}
+	
+	    /* NEW: Animated gradient background for footer */
+    .gradient-footer {
+        position: relative;
+        background: linear-gradient(125deg, rgb(5, 7, 20), rgb(10, 17, 40) 25%, rgb(15, 31, 75) 50%, rgb(26, 11, 46) 75%, rgb(10, 10, 10)) 0% 0% / 400% 400%;
+        animation: gradientShift 5s ease infinite;
+        padding: 40px 0 20px;
+        margin-top: auto;
+        color: white;
+    }
+    
+    @keyframes gradientShift {
+        0% {
+            background-position: 0% 0%;
+        }
+        50% {
+            background-position: 100% 100%;
+        }
+        100% {
+            background-position: 0% 0%;
+        }
+    }
+    
+    /* Footer container */
+    .footer-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 px;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .footer-content {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 30px;
+        margin-bottom: 30px;
+    }
+    
+    .footer-column h3 {
+        font-size: 18px;
+        margin-bottom: 20px;
+        font-weight: 600;
+        position: relative;
+        padding-bottom: 8px;
+    }
+    
+    .footer-column h3::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 40px;
+        height: 3px;
+        background-color: #3498db;
+    }
+    
+    .footer-links {
+        list-style: none;
+    }
+    
+    .footer-links li {
+        margin-bottom: 12px;
+    }
+    
+    .footer-links a {
+        text-decoration: none;
+        color: #ddd;
+        font-size: 15px;
+        transition: color 0.3s;
+        display: flex;
+        align-items: center;
+    }
+    
+    .footer-links a:hover {
+        color: #ffd166; /* Using your accent color for hover */
+    }
+    
+    .dropdown-icon {
+        margin-left: 5px;
+        font-size: 12px;
+        color: #aaa;
+    }
+    
+    .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        padding-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+    
+    .copyright {
+        color: #ccc;
+        font-size: 14px;
+    }
+    
+    .footer-bottom-links {
+        display: flex;
+        gap: 20px;
+    }
+    
+    .footer-bottom-links a {
+        text-decoration: none;
+        color: #ccc;
+        font-size: 14px;
+        transition: color 0.3s;
+    }
+    
+    .footer-bottom-links a:hover {
+        color: #ffd166; /* Using your accent color for hover */
+    }
+    
+	.gradient-footer {
+    padding: 40px 0 20px !important; /* Remove left/right padding */
+}
+
+.footer-container {
+    padding: 0 20px !important; /* Adjust this value as needed */
+    max-width: 100% !important;
+}
+
+    /* Logo in footer */
+    .footer-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+    
+    .footer-logo .logo {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #03a9f4, #00bcd4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        color: white;
+        font-size: 14px;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 992px) {
+        .footer-content {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .footer-content {
+            grid-template-columns: 1fr;
+        }
+        
+        .footer-bottom {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .footer-bottom-links {
+            justify-content: center;
+            width: 100%;
+        }
+    }
+	
+	/* Footer brand styling */
+.footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.footer-brand-text h3 {
+    margin: 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    letter-spacing: -0.02em;
+}
+
+.footer-brand-text .muted {
+    opacity: 0.8;
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+.footer-brand-shop-row {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.footer-brand-text h3 {
+    margin: 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    letter-spacing: -0.02em;
+}
+
+.footer-brand-text .muted {
+    opacity: 0.8;
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+.footer-shop-title {
+    margin: 0 !important;
+}
+    /* --- Cursor styles --- */
+    .cursor{
+      position:fixed;left:0;top:0;transform:translate(-50%,-50%);width:36px;height:36px;border-radius:50%;pointer-events:none;z-index:9999;mix-blend-mode:screen;backdrop-filter: blur(2px);
+      display:flex;align-items:center;justify-content:center;transition:width .12s ease,height .12s ease,opacity .12s ease,transform .12s ease;
+      border:2px solid rgba(255,255,255,0.14);background:radial-gradient(circle at 40% 30%, rgba(255,255,255,0.12), rgba(0,0,0,0.1));
+      box-shadow:0 6px 18px rgba(2,40,60,0.45);
+    }
+    .cursor .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 4px 10px rgba(255,209,102,0.18)}
+    .cursor.hidden{opacity:0}
+    .cursor.big{width:86px;height:86px}
+
+    /* clickable feedback area */
+    .pulse{position:fixed;border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:0}
+
+    /* small utility */
+    .muted{opacity:0.8;font-size:14px}
+	
+	.grid-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr; /* Creates two equal-width columns */
+      column-gap: 20px;
+    }
+
+    .div1, .div2 {
+      padding: 10px;
+      border: 0px solid black;
+    }
+	
+	/* Shift footer content to the right */
+.footer-content {
+    margin-left: 200px; /* Adjust this value based on how much space you need */
+}
+
+/* Or if you want more control, use grid with empty first column */
+.footer-content {
+    grid-template-columns: 200px repeat(4, 1fr); /* 200px empty space + 4 columns */
+    gap: 30px;
+}
+
+/* Alternative: Use padding on first column */
+.footer-column:first-child {
+    grid-column: 2; /* Start from second column */
+}
+
+/* Or create specific layout */
+.footer-logo-space {
+    grid-column: 1;
+    display: flex;
+    align-items: flex-start;
+}
+
+.footer-content-columns {
+    grid-column: 2 / span 4;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+}
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo">ST</div>
+        <div>
+          <h1>SelfieTape</h1>
+          <div class="muted">Precision measurements for the modern tailor</div>
+        </div>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="Features.html">Features</a>
+        <a href="Shop.html" class="active">Shop</a>
+        <a href="Demo.html">Demo</a>
+        <a href="Team.html">Team</a>
+        <a href="blog.html">Blog</a>
+        <div class="cart-icon" id="cart-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 3H5L5.4 5M7 13H17L21 5H5.4M7 13L5.4 5M7 13L4.7 15.3C4.3 15.7 4.6 16.4 5.2 16.4H17M17 13V16.4M9 19C9 19.5523 8.55228 20 8 20C7.44772 20 7 19.5523 7 19C7 18.4477 7.44772 18 8 18C8.55228 18 9 18.4477 9 19ZM17 19C17 19.5523 16.5523 20 16 20C15.4477 20 15 19.5523 15 19C15 18.4477 15.4477 18 16 18C16.5523 18 17 18.4477 17 19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div class="cart-count" id="cart-count">0</div>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="shop-hero">
+        <h2>SelfieTape Shop</h2>
+        <p>Discover precision measuring tools designed specifically for tailors, seamstresses, and alterations professionals. Work smarter, not harder.</p>
+      </section>
+
+      <div class="shop-container">
+        <aside class="filters">
+          <div class="filter-card">
+            <h3>📐 Categories</h3>
+            <div class="filter-options">
+              <label class="filter-option">
+                <input type="checkbox" checked> All Products
+              </label>
+              <label class="filter-option">
+                <input type="checkbox"> Smart Tape Measures
+              </label>
+              <label class="filter-option">
+                <input type="checkbox"> Professional Kits
+              </label>
+              <label class="filter-option">
+                <input type="checkbox"> Studio Equipment
+              </label>
+              <label class="filter-option">
+                <input type="checkbox"> Accessories
+              </label>
+            </div>
+          </div>
+
+          <div class="filter-card">
+            <h3>💰 Price Range</h3>
+            <input type="range" class="price-range" min="0" max="500" value="250">
+            <div style="display:flex;justify-content:space-between;margin-top:8px">
+              <span>$0</span>
+              <span>$500</span>
+            </div>
+          </div>
+
+          <div class="filter-card">
+            <h3>⚙️ Features</h3>
+            <div class="filter-options">
+              <label class="filter-option">
+                <input type="checkbox"> Phone Compatible
+              </label>
+              <label class="filter-option">
+                <input type="checkbox"> Digital Logging
+              </label>
+              <label class="filter-option">
+                <input type="checkbox"> Durable Blade
+              </label>
+              <label class="filter-option">
+                <input type="checkbox"> Professional Grade
+              </label>
+            </div>
+          </div>
+        </aside>
+
+        <section class="products">
+          <div class="products-header">
+            <h3>Precision Tools</h3>
+            <select class="sort-select">
+              <option>Sort by: Featured</option>
+              <option>Price: Low to High</option>
+              <option>Price: High to Low</option>
+              <option>Newest First</option>
+            </select>
+          </div>
+
+          <div class="products-grid">
+            <!-- Product 1 -->
+            <div class="product-card">
+              <div class="product-image">
+                <div class="product-badge">Bestseller</div>
+                <!-- Tape Measure Icon -->
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 6L12 12" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M9 9L15 9" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="product-info">
+                <h3>SelfieTape Pro</h3>
+                <p class="product-description">Our flagship smart tape measure with phone clip and digital measurement logging. Perfect for solo tailors.</p>
+                <div class="product-price">
+                  <span class="current-price">$79.99</span>
+                  <span class="original-price">$99.99</span>
+                </div>
+                <button class="add-to-cart" data-id="1" data-name="SelfieTape Pro" data-price="79.99">Add to Cart</button>
+              </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="product-card">
+              <div class="product-image">
+                <!-- Scissors and Tape Icon -->
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M6 6L9 9" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M6 18L9 15" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M20 4L8 12L20 20V4Z" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="product-info">
+                <h3>Tailor's Studio Bundle</h3>
+                <p class="product-description">Complete set: SelfieTape Pro + Measurement Log Book + Phone Mount Kit. Everything a professional needs.</p>
+                <div class="product-price">
+                  <span class="current-price">$129.99</span>
+                </div>
+                <button class="add-to-cart" data-id="2" data-name="Tailor's Studio Bundle" data-price="129.99">Add to Cart</button>
+              </div>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="product-card">
+              <div class="product-image">
+                <div class="product-badge">New</div>
+                <!-- Smartphone and Tape Icon -->
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <rect x="8" y="4" width="8" height="14" rx="2" stroke="rgba(255,255,255,0.6)" stroke-width="2"/>
+                  <path d="M12 6V12L14 14" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="product-info">
+                <h3>Digital Measurement Log</h3>
+                <p class="product-description">App subscription + cloud storage for unlimited client measurement archives with visual references.</p>
+                <div class="product-price">
+                  <span class="current-price">$29.99/year</span>
+                  <span class="original-price">$39.99/year</span>
+                </div>
+                <button class="add-to-cart" data-id="3" data-name="Digital Measurement Log" data-price="29.99">Add to Cart</button>
+              </div>
+            </div>
+
+            <!-- Product 4 -->
+            <div class="product-card">
+              <div class="product-image">
+                <!-- Flexible Tape Icon -->
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 5.5V7H9V5.5L3 7V9L9 10.5V12L3 13.5V15.5L9 14V16L3 17.5V19.5L9 18V22H15V18L21 19.5V17.5L15 16V14L21 15.5V13.5L15 12V10.5L21 9Z" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="product-info">
+                <h3>Flexible Curve Tape</h3>
+                <p class="product-description">Specialty tape measure that bends around body contours for accurate bust, waist, and hip measurements.</p>
+                <div class="product-price">
+                  <span class="current-price">$34.99</span>
+                </div>
+                <button class="add-to-cart" data-id="4" data-name="Flexible Curve Tape" data-price="34.99">Add to Cart</button>
+              </div>
+            </div>
+
+            <!-- Product 5 -->
+            <div class="product-card">
+              <div class="product-image">
+                <!-- Phone Mount Icon -->
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 12L11 14L15 10M12 3C13.1819 3 14.3522 3.23279 15.4442 3.68508C16.5361 4.13738 17.5282 4.80031 18.364 5.63604C19.1997 6.47177 19.8626 7.46392 20.3149 8.55585C20.7672 9.64778 21 10.8181 21 12C21 13.1819 20.7672 14.3522 20.3149 15.4442C19.8626 16.5361 19.1997 17.5282 18.364 18.364C17.5282 19.1997 16.5361 19.8626 15.4442 20.3149C14.3522 20.7672 13.1819 21 12 21C10.8181 21 9.64778 20.7672 8.55585 20.3149C7.46392 19.8626 6.47177 19.1997 5.63604 18.364C4.80031 17.5282 4.13738 16.5361 3.68508 15.4442C3.23279 14.3522 3 13.1819 3 12C3 9.61305 3.94821 7.32387 5.63604 5.63604C7.32387 3.94821 9.61305 3 12 3Z" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <rect x="7" y="7" width="10" height="10" rx="2" stroke="rgba(255,255,255,0.6)" stroke-width="2"/>
+                </svg>
+              </div>
+              <div class="product-info">
+                <h3>Universal Phone Mount</h3>
+                <p class="product-description">Sturdy clip attachment compatible with all smartphone models for hands-free measuring.</p>
+                <div class="product-price">
+                  <span class="current-price">$14.99</span>
+                </div>
+                <button class="add-to-cart" data-id="5" data-name="Universal Phone Mount" data-price="14.99">Add to Cart</button>
+              </div>
+            </div>
+
+            <!-- Product 6 -->
+            <div class="product-card">
+              <div class="product-image">
+                <div class="product-badge">Bundle</div>
+                <!-- Professional Kit Icon -->
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M20 7H4C2.89543 7 2 7.89543 2 9V19C2 20.1046 2.89543 21 4 21H20C21.1046 21 22 20.1046 22 19V9C22 7.89543 21.1046 7 20 7Z" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M16 21V5C16 4.46957 15.7893 3.96086 15.4142 3.58579C15.0391 3.21071 14.5304 3 14 3H10C9.46957 3 8.96086 3.21071 8.58579 3.58579C8.21071 3.96086 8 4.46957 8 5V21" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="12" cy="12" r="2" stroke="rgba(255,255,255,0.6)" stroke-width="2"/>
+                  <path d="M12 8V10" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M12 14V16" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="product-info">
+                <h3>Alterations Studio Kit</h3>
+                <p class="product-description">Complete package for alteration shops: 3 SelfieTape Pros + Team Training + 1-year Cloud Storage.</p>
+                <div class="product-price">
+                  <span class="current-price">$229.99</span>
+                  <span class="original-price">$299.99</span>
+                </div>
+                <button class="add-to-cart" data-id="6" data-name="Alterations Studio Kit" data-price="229.99">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <div class="bubble b1"></div>
+    <div class="bubble b2"></div>
+    <div class="bubble b3"></div>
+
+    <div class="ocean" aria-hidden="true">
+      <svg class="waves" viewBox="0 0 1440 320" preserveAspectRatio="none" style="width:100%;height:240px;display:block;">
+        <defs>
+          <linearGradient id="g1" x1="0" x2="1">
+            <stop offset="0%" stop-color="#00a2d1" stop-opacity="0.18" />
+            <stop offset="100%" stop-color="#033a5b" stop-opacity="0.22" />
+          </linearGradient>
+        </defs>
+        <path fill="url(#g1)" d="M0,160 C200,220 400,80 720,160 C1040,240 1200,120 1440,160 L1440,320 L0,320 Z">
+        </path>
+        <path fill="#062c45" opacity="0.12" d="M0,200 C220,120 420,260 720,210 C1020,160 1220,230 1440,200 L1440,320 L0,320 Z"></path>
+      </svg>
+    </div>
+
+   <!--FOOTER WITH ANIMATED GRADIENT -->
+    <footer class="gradient-footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <div class="footer-brand-shop-row">
+                        <div class="footer-brand">
+                            <div class="logo">ST</div>
+                            <div class="footer-brand-text">
+                                <h3>SelfieTape</h3>
+                                <div class="muted">Measure with precision</div>
+                            </div>
+                        </div>
+                        <h3 class="footer-shop-title">Shop</h3>
+                    </div>
+                    <ul class="footer-links">
+                        <li><a href="#">SelfieTape Pro <span class="dropdown-icon">▼</span></a></li>
+                        <li><a href="#">All Products <span class="dropdown-icon">▼</span></a></li>
+                        <li><a href="#">FAQs</a></li>
+                    </ul>
+                </div>
+               
+                <div class="footer-column">
+                    <h3>Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Our Story <span class="dropdown-icon">▼</span></a></li>
+                        <li><a href="#">For Studios <span class="dropdown-icon">▼</span></a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Blog <span class="dropdown-icon">▼</span></a></li>
+                        <li><a href="#">Measurement Guides <span class="dropdown-icon">▼</span></a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Connect</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><span style="margin-right: 8px;">✂️</span> Tailor Support</a></li>
+                        <li><a href="#"><span style="margin-right: 8px;">📐</span> Become an Ambassador</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="copyright">
+                    © 2025 SELFIETAPE. Precision tools for professionals.
+                </div>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>                         
+  </div>
+
+  <!-- Cart Modal -->
+  <div class="cart-modal" id="cart-modal">
+    <div class="cart-header">
+      <h3>Your Cart</h3>
+      <button class="close-cart" id="close-cart">&times;</button>
+    </div>
+    <div class="cart-items" id="cart-items">
+      <!-- Cart items will be dynamically inserted here -->
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total:</span>
+        <span id="cart-total">$0.00</span>
+      </div>
+      <button class="checkout-btn">Proceed to Checkout</button>
+    </div>
+  </div>
+
+  <!-- Overlay -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- Custom circular cursor + interactions -->
+  <div class="cursor" id="cursor"><div class="dot"></div></div>
+  <div class="pulse" id="pulse"></div>
+
+  <script>
+    // Shopping cart functionality
+    let cart = [];
+    const cartModal = document.getElementById('cart-modal');
+    const cartIcon = document.getElementById('cart-icon');
+    const closeCart = document.getElementById('close-cart');
+    const overlay = document.getElementById('overlay');
+    const cartItems = document.getElementById('cart-items');
+    const cartTotal = document.getElementById('cart-total');
+    const cartCount = document.getElementById('cart-count');
+
+    // Open cart
+    cartIcon.addEventListener('click', () => {
+      cartModal.classList.add('open');
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+
+    // Close cart
+    closeCart.addEventListener('click', () => {
+      cartModal.classList.remove('open');
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+
+    // Close cart when clicking overlay
+    overlay.addEventListener('click', () => {
+      cartModal.classList.remove('open');
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+
+    // Add to cart functionality
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+      button.addEventListener('click', (e) => {
+        const id = e.target.dataset.id;
+        const name = e.target.dataset.name;
+        const price = parseFloat(e.target.dataset.price);
+        
+        // Check if item already in cart
+        const existingItem = cart.find(item => item.id === id);
+        
+        if (existingItem) {
+          existingItem.quantity += 1;
+        } else {
+          cart.push({
+            id,
+            name,
+            price,
+            quantity: 1
+          });
+        }
+        
+        updateCart();
+        
+        // Visual feedback
+        e.target.textContent = 'Added!';
+        setTimeout(() => {
+          e.target.textContent = 'Add to Cart';
+        }, 1500);
+      });
+    });
+
+    // Update cart display
+    function updateCart() {
+      // Update cart count
+      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+      cartCount.textContent = totalItems;
+      
+      // Update cart items
+      cartItems.innerHTML = '';
+      
+      if (cart.length === 0) {
+        cartItems.innerHTML = '<p style="text-align:center;opacity:0.7">Your cart is empty</p>';
+        cartTotal.textContent = '$0.00';
+        return;
+      }
+      
+      let total = 0;
+      
+      cart.forEach(item => {
+        const itemTotal = item.price * item.quantity;
+        total += itemTotal;
+        
+        const cartItem = document.createElement('div');
+        cartItem.className = 'cart-item';
+        cartItem.innerHTML = `
+          <div class="cart-item-image">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="cart-item-details">
+            <h4>${item.name}</h4>
+            <div class="cart-item-price">$${item.price.toFixed(2)}</div>
+            <div class="cart-item-controls">
+              <button class="quantity-btn minus" data-id="${item.id}">-</button>
+              <span>${item.quantity}</span>
+              <button class="quantity-btn plus" data-id="${item.id}">+</button>
+              <button class="quantity-btn remove" data-id="${item.id}" style="margin-left:auto">×</button>
+            </div>
+          </div>
+        `;
+        
+        cartItems.appendChild(cartItem);
+      });
+      
+      // Update total
+      cartTotal.textContent = `$${total.toFixed(2)}`;
+      
+      // Add event listeners to quantity buttons
+      document.querySelectorAll('.quantity-btn.minus').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const id = e.target.dataset.id;
+          const item = cart.find(item => item.id === id);
+          
+          if (item.quantity > 1) {
+            item.quantity -= 1;
+          } else {
+            cart = cart.filter(item => item.id !== id);
+          }
+          
+          updateCart();
+        });
+      });
+      
+      document.querySelectorAll('.quantity-btn.plus').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const id = e.target.dataset.id;
+          const item = cart.find(item => item.id === id);
+          item.quantity += 1;
+          updateCart();
+        });
+      });
+      
+      document.querySelectorAll('.quantity-btn.remove').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const id = e.target.dataset.id;
+          cart = cart.filter(item => item.id !== id);
+          updateCart();
+        });
+      });
+    }
+
+    // Initialize cart
+    updateCart();
+
+    // Cursor functionality (from original code)
+    (function(){
+      const cursor = document.getElementById('cursor');
+      const pulseContainer = document.getElementById('pulse');
+      let mouseX = window.innerWidth/2, mouseY = window.innerHeight/2;
+      let posX = mouseX, posY = mouseY;
+      let raf = null;
+
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+      // follow loop with slight lag
+      function loop(){
+        posX += (mouseX - posX) * 0.18;
+        posY += (mouseY - posY) * 0.18;
+        cursor.style.transform = `translate(${posX}px, ${posY}px) translate(-50%, -50%)`;
+        raf = requestAnimationFrame(loop);
+      }
+      raf = requestAnimationFrame(loop);
+
+      // mouse move
+      window.addEventListener('mousemove', e=>{
+        mouseX = e.clientX; mouseY = e.clientY;
+        cursor.classList.remove('hidden');
+      });
+
+      window.addEventListener('mouseleave', ()=>cursor.classList.add('hidden'));
+      window.addEventListener('mouseenter', ()=>cursor.classList.remove('hidden'));
+
+      // CLICK PULSE: creates multiple fading pulses
+      window.addEventListener('click', (e)=>{
+        for(let i=0; i<2; i++){ // create 2 pulses for better effect
+          const pulse = document.createElement('div');
+          pulse.className = 'pulse';
+          document.body.appendChild(pulse);
+
+          pulse.style.left = e.clientX + 'px';
+          pulse.style.top = e.clientY + 'px';
+          pulse.style.width = '10px';
+          pulse.style.height = '10px';
+          pulse.style.opacity = '0.18';
+          pulse.style.background = 'radial-gradient(circle, rgba(255,209,102,0.18), transparent 60%)';
+          pulse.style.transition = 'width 420ms cubic-bezier(.2,.9,.3,1), height 420ms cubic-bezier(.2,.9,.3,1), opacity 420ms linear, transform 420ms ease-out';
+          pulse.style.position = 'fixed';
+          pulse.style.pointerEvents = 'none';
+          pulse.style.borderRadius = '50%';
+          pulse.style.zIndex = '9998';
+
+          requestAnimationFrame(()=>{
+            pulse.style.width = '220px';
+            pulse.style.height = '220px';
+            pulse.style.opacity = '0';
+            pulse.style.transform = 'translate(-50%, -50%)';
+          });
+
+          setTimeout(()=>pulse.remove(), 450); // remove after animation
+        }
+      });
+
+      // interactive expansion on links / buttons
+      const hoverables = 'a,button,input,textarea,select,[role="button"]';
+      document.addEventListener('mouseover', e=>{
+        if(e.target.closest(hoverables)){
+          cursor.classList.add('big');
+          cursor.style.transitionTimingFunction = 'cubic-bezier(.18,.9,.3,1)';
+        }
+      });
+      document.addEventListener('mouseout', e=>{
+        if(e.target.closest(hoverables)){
+          cursor.classList.remove('big');
+        }
+      });
+
+      // keyboard toggle for motion
+      let motionOn = true;
+      function toggleMotion(state){
+        motionOn = state === undefined ? !motionOn : !!state;
+        const bubbles = document.querySelectorAll('.bubble');
+        bubbles.forEach((b,i)=> b.style.animationPlayState = motionOn ? 'running' : 'paused');
+        document.body.style.animationPlayState = motionOn ? 'running' : 'paused';
+      }
+      document.getElementById('toggle-motion').addEventListener('click', ()=>toggleMotion());
+      window.addEventListener('keydown',(e)=>{ if(e.code==='Space') { e.preventDefault(); toggleMotion(); } });
+
+      if(prefersReduced){
+        toggleMotion(false);
+      }
+
+      // touch fallback: show a subtle cursor on touchstart and hide after
+      window.addEventListener('touchstart',(e)=>{
+        cursor.classList.remove('hidden');
+        const t = e.touches[0]; mouseX = t.clientX; mouseY = t.clientY;
+        setTimeout(()=>cursor.classList.add('hidden'), 1500);
+      });
+
+      // clean up
+      window.addEventListener('unload', ()=> cancelAnimationFrame(raf));
+    })();
+  </script>
+</body>
+</html>

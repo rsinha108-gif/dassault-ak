@@ -1,0 +1,938 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Selfietape — Team</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-1: #05294a;
+  --bg-2: #046582;
+  --accent: #ffd166;
+  --glass: rgba(255,255,255,0.06);
+  --card: rgba(255,255,255,0.04);
+}
+
+/* Base styles */
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Inter', sans-serif;
+  color:#e6f7ff;
+  background: radial-gradient(ellipse at bottom, var(--bg-2) 0%, var(--bg-1) 100%);
+  overflow-x:hidden;
+  position:relative;
+}
+
+/* Animated stars background */
+.stars, .stars2, .stars3 {
+  position:fixed;
+  width:100%;
+  height:100%;
+  top:0; left:0;
+  background:transparent;
+  z-index:-1;
+}
+.stars:after, .stars2:after, .stars3:after {
+  content:'';
+  position:absolute;
+  width:2000px;
+  height:2000px;
+  background:transparent;
+  box-shadow:
+    50px 120px #fff,
+    200px 400px #fff,
+    600px 700px #fff,
+    900px 300px #fff,
+    1200px 500px #fff,
+    1500px 800px #fff,
+    1800px 200px #fff;
+  animation:starMove 60s linear infinite;
+}
+.stars2:after {animation-duration:100s; transform:scale(0.6);}
+.stars3:after {animation-duration:140s; transform:scale(0.3);}
+@keyframes starMove {0%{transform:translateY(0);}100%{transform:translateY(-2000px);}}
+
+/* Header */
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px 6vw;
+  background:rgba(5,41,74,0.6);
+  backdrop-filter:blur(10px);
+  position:fixed;
+  width:100%;
+  top:0;
+  z-index:10;
+  animation: slideDown 0.8s ease-out;
+}
+@keyframes slideDown {
+  0% { transform: translateY(-100%); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+.brand{display:flex;align-items:center;gap:14px;}
+.logo{
+  width:54px;height:54px;border-radius:12px;
+  background:linear-gradient(135deg,#03a9f4,#00bcd4);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;color:white;
+  box-shadow:0 6px 18px rgba(2,40,60,0.45);
+  animation: pulseLogo 4s infinite;
+}
+@keyframes pulseLogo {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+h1{font-family:'Playfair Display', serif;font-size:28px;}
+nav a{
+  color:#e6f7ff;text-decoration:none;font-weight:600;
+  margin-left:18px;padding:6px 12px;border-radius:10px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+nav a:before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+nav a:hover{background:rgba(255,255,255,0.03);}
+nav a:hover:before { width: 100%; }
+
+/* Main content */
+main{
+  padding:120px 6vw 60px 6vw;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:40px;
+}
+h2{
+  font-family:'Playfair Display', serif;
+  font-size:clamp(28px,5vw,42px);
+  margin-bottom:40px;
+  text-align:center;
+  text-shadow:0 0 12px rgba(255,255,255,0.4);
+  animation: fadeInUp 1s ease-out;
+}
+
+/* Team grid - 6 in one line */
+.team-grid{
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:nowrap;
+  gap:20px;
+  width:100%;
+  max-width:1440px;
+}
+
+/* Team cards */
+.team-card{
+  background:var(--card);
+  border-radius:18px;
+  padding:18px;
+  backdrop-filter: blur(8px);
+  text-align:center;
+  border:1px solid rgba(255,255,255,0.03);
+  transition:transform 0.3s, box-shadow 0.3s;
+  flex:1 1 0;
+  position: relative;
+  overflow: hidden;
+  animation: fadeInUp 0.8s ease-out;
+  animation-fill-mode: both;
+}
+.team-card:nth-child(1) { animation-delay: 0.1s; }
+.team-card:nth-child(2) { animation-delay: 0.2s; }
+.team-card:nth-child(3) { animation-delay: 0.3s; }
+.team-card:nth-child(4) { animation-delay: 0.4s; }
+.team-card:nth-child(5) { animation-delay: 0.5s; }
+.team-card:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.team-card:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  transition: left 0.5s;
+}
+.team-card:hover:before {
+  left: 100%;
+}
+
+.team-card:hover{
+  transform:translateY(-10px) scale(1.02);
+  box-shadow:0 12px 28px rgba(0,255,255,0.3);
+}
+.team-card img{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+  border-radius:14px;
+  margin-bottom:12px;
+  border:2px solid rgba(255,255,255,0.08);
+  transition: all 0.3s ease;
+}
+.team-card:hover img {
+  transform: scale(1.05);
+  border-color: rgba(255,209,102,0.3);
+}
+.team-card h3{
+  font-size:18px;
+  margin-bottom:6px;
+  color:#ffd166;
+  position: relative;
+  display: inline-block;
+}
+.team-card h3:after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+.team-card:hover h3:after {
+  width: 100%;
+}
+.team-card p{
+  font-size:14px;
+  color:rgba(230,247,255,0.8);
+  line-height:1.4;
+}
+
+/* CTA Button */
+.cta{
+  display:inline-block;
+  padding:12px 22px;
+  border-radius:12px;
+  background:linear-gradient(90deg,var(--accent),#ffb347);
+  color:#002029;
+  font-weight:700;
+  text-decoration:none;
+  margin-top:20px;
+  box-shadow:0 8px 24px rgba(255,153,51,0.12);
+  transition:transform 0.2s, box-shadow 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.cta:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s;
+}
+.cta:hover:before {
+  left: 100%;
+}
+.cta:hover{
+  transform:scale(1.05);
+  box-shadow:0 12px 28px rgba(255,153,51,0.3);
+}
+
+/* Footer */
+footer{
+  padding:28px 6vw;
+  color:rgba(230,247,255,0.75);
+  text-align:center;
+  margin-top:40px;
+}
+
+/* Responsive */
+@media (max-width:1400px){
+  .team-grid{flex-wrap:wrap;}
+  .team-card{flex:1 1 calc(33.33% - 20px);}
+}
+@media (max-width:900px){
+  .team-card{flex:1 1 calc(50% - 20px);}
+}
+@media (max-width:600px){
+  .team-card{flex:1 1 100%;}
+}
+
+ /*  Animated gradient background for footer */
+    .gradient-footer {
+        position: relative;
+        background: linear-gradient(125deg, rgb(5, 7, 20), rgb(10, 17, 40) 25%, rgb(15, 31, 75) 50%, rgb(26, 11, 46) 75%, rgb(10, 10, 10)) 0% 0% / 400% 400%;
+        animation: gradientShift 5s ease infinite;
+        padding: 40px 0 20px;
+        margin-top: auto;
+        color: white;
+    }
+    
+    @keyframes gradientShift {
+        0% {
+            background-position: 0% 0%;
+        }
+        50% {
+            background-position: 100% 100%;
+        }
+        100% {
+            background-position: 0% 0%;
+        }
+    }
+    
+    /* Footer container */
+    .footer-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 px;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .footer-content {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 30px;
+        margin-bottom: 30px;
+    }
+    
+    .footer-column h3 {
+        font-size: 18px;
+        margin-bottom: 20px;
+        font-weight: 600;
+        position: relative;
+        padding-bottom: 8px;
+        display: inline-block;
+    }
+	
+    /*Blue Dash - Now aligned with text width */
+    .footer-column h3::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%; /* Changed from fixed 40px to 100% */
+        height: 3px;
+        background-color: #3498db;
+        border-radius: 2px;
+        animation: dashPulse 3s infinite;
+    }
+    
+    @keyframes dashPulse {
+        0% { transform: scaleX(1); }
+        50% { transform: scaleX(1.05); }
+        100% { transform: scaleX(1); }
+    }
+    
+    .footer-links {
+        list-style: none;
+    }
+    
+    .footer-links li {
+        margin-bottom: 12px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .footer-links a {
+        text-decoration: none;
+        color: #ddd;
+        font-size: 15px;
+        transition: color 0.3s;
+        display: flex;
+        align-items: center;
+        position: relative;
+        padding-left: 0;
+        transition: padding-left 0.3s ease;
+    }
+    
+    .footer-links a:hover {
+        color: #ffd166; /* Using your accent color for hover */
+        padding-left: 8px;
+    }
+    
+    .footer-links a:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 0;
+        height: 2px;
+        background: var(--accent);
+        transition: width 0.3s ease;
+    }
+    
+    .footer-links a:hover:before {
+        width: 6px;
+    }
+    
+    .dropdown-icon {
+        margin-left: 5px;
+        font-size: 12px;
+        color: #aaa;
+        transition: transform 0.3s ease;
+    }
+    
+    .footer-links a:hover .dropdown-icon {
+        transform: translateY(2px);
+    }
+    
+    .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        padding-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+    
+    .copyright {
+        color: #ccc;
+        font-size: 14px;
+    }
+    
+    .footer-bottom-links {
+        display: flex;
+        gap: 20px;
+    }
+    
+    .footer-bottom-links a {
+        text-decoration: none;
+        color: #ccc;
+        font-size: 14px;
+        transition: color 0.3s;
+        position: relative;
+    }
+    
+    .footer-bottom-links a:after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background: var(--accent);
+        transition: width 0.3s ease;
+    }
+    
+    .footer-bottom-links a:hover {
+        color: #ffd166; /* Using your accent color for hover */
+    }
+    
+    .footer-bottom-links a:hover:after {
+        width: 100%;
+    }
+    
+	.gradient-footer {
+    padding: 40px 0 20px !important; /* Remove left/right padding */
+}
+
+.footer-container {
+    padding: 0 20px !important; /* Adjust this value as needed */
+    max-width: 100% !important;
+}
+
+    /* Logo in footer */
+    .footer-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+    
+    .footer-logo .logo {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #03a9f4, #00bcd4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        color: white;
+        font-size: 14px;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 992px) {
+        .footer-content {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .footer-content {
+            grid-template-columns: 1fr;
+        }
+        
+        .footer-bottom {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .footer-bottom-links {
+            justify-content: center;
+            width: 100%;
+        }
+    }
+	
+	/* Footer brand styling */
+.footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.footer-brand-text h3 {
+    margin: 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    letter-spacing: -0.02em;
+}
+
+.footer-brand-text .muted {
+    opacity: 0.8;
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+.footer-brand-shop-row {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.footer-brand-text h3 {
+    margin: 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    letter-spacing: -0.02em;
+}
+
+.footer-brand-text .muted {
+    opacity: 0.8;
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+.footer-shop-title {
+    margin: 0 !important;
+}
+
+/* --- Cursor styles --- */
+    .cursor{
+      position:fixed;left:0;top:0;transform:translate(-50%,-50%);width:36px;height:36px;border-radius:50%;pointer-events:none;z-index:9999;mix-blend-mode:screen;backdrop-filter: blur(2px);
+      display:flex;align-items:center;justify-content:center;transition:width .12s ease,height .12s ease,opacity .12s ease,transform .12s ease;
+      border:2px solid rgba(255,255,255,0.14);background:radial-gradient(circle at 40% 30%, rgba(255,255,255,0.12), rgba(0,0,0,0.1));
+      box-shadow:0 6px 18px rgba(2,40,60,0.45);
+    }
+    .cursor .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 4px 10px rgba(255,209,102,0.18)}
+    .cursor.hidden{opacity:0}
+    .cursor.big{width:86px;height:86px}
+
+    /* clickable feedback area */
+    .pulse{position:fixed;border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:0}
+
+    /* small utility */
+    .muted{opacity:0.8;font-size:14px}
+	
+	.grid-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr; /* Creates two equal-width columns */
+      column-gap: 20px;
+    }
+
+    .div1, .div2 {
+      padding: 10px;
+      border: 0px solid black;
+    }
+	
+	/* to Shift footer content to the right */
+.footer-content {
+    margin-left: 150px; /* Adjust this value based on how much space you need */
+}
+
+/* if want more control, use grid with empty first column */
+.footer-content {
+    grid-template-columns: 200px repeat(4, 1fr); /* 200px empty space + 4 columns */
+    gap: 30px;
+}
+
+/* Alternative: Use padding on first column */
+.footer-column:first-child {
+    grid-column: 2; /* Start from second column */
+}
+
+/* Or create specific layout */
+.footer-logo-space {
+    grid-column: 1;
+    display: flex;
+    align-items: flex-start;
+}
+
+.footer-content-columns {
+    grid-column: 2 / span 4;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+}
+
+/* Add this to your existing CSS - Wave Animation */
+.waves path {
+    animation: waveMove 8s ease-in-out infinite;
+}
+
+@keyframes waveMove {
+    0% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(-30px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+/* For more realistic layered wave motion */
+.waves path:first-child {
+    animation: waveMove 12s ease-in-out infinite;
+}
+
+.waves path:last-child {
+    animation: waveMove 10s ease-in-out infinite;
+    animation-delay: 0.5s;
+}
+
+/* Floating particles animation */
+.particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    animation: float 8s infinite linear;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(100vh) translateX(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100px) translateX(20px);
+        opacity: 0;
+    }
+}
+
+/* Glow effect for team cards */
+.glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 18px;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.team-card:hover .glow {
+    opacity: 1;
+}
+
+/* Text reveal animation */
+.reveal-text {
+    position: relative;
+    overflow: hidden;
+}
+
+.reveal-text:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-1);
+    animation: textReveal 1.5s ease-out forwards;
+}
+
+@keyframes textReveal {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(100%); }
+}
+
+/*  footer layout */
+.footer-column h3 {
+    width: auto;
+    display: inline-block;
+}
+
+/* fix fur footer alignment */
+.footer-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 30px;
+}
+
+@media (max-width: 992px) {
+    .footer-content {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 576px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+<body>
+
+<!-- Star backgrounds -->
+<div class="stars"></div>
+<div class="stars2"></div>
+<div class="stars3"></div>
+
+<!-- Floating particles -->
+<div class="particles" id="particles"></div>
+
+<header>
+  <div class="brand">
+    <div class="logo">ST</div>
+    <div>
+      <h1>Selfietape</h1>
+      <div class="muted">“Ab Na Guesswork, Na Galti”</div>
+    </div>
+  </div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="features.html">Features</a>
+	<a href="Shop.html">Shop</a>
+	<a href="Demo.html">Demo</a>
+    <a href="contact.html">Blog</a>
+  </nav>
+</header>
+
+<main>
+  <h2 class="reveal-text">Meet the Team</h2>
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="glow"></div>
+      <img src="https://via.placeholder.com/300x180" alt="Team Member 1">
+      <h3>Aarini Taradi</h3>
+      <p>Pitch Deck</p>
+    </div>
+    <div class="team-card">
+      <div class="glow"></div>
+      <img src="https://via.placeholder.com/300x180" alt="Team Member 2">
+      <h3>Divyang Sharma</h3>
+      <p>Finance</p>
+    </div>
+    <div class="team-card">
+      <div class="glow"></div>
+      <img src="C://Users/aviji/Desktop/Website" alt="Team Member 3">
+      <h3>Avijit Sinha</h3>
+      <p>@Web-Developer(Online Website Lead)</p>
+    </div>
+    <div class="team-card">
+      <div class="glow"></div>
+      <img src="https://via.placeholder.com/300x180" alt="Team Member 4">
+     <h3>Swayam Kondawar</h3>
+      <p>Lead 3D Designer</p>
+    </div>
+    <div class="team-card">
+      <div class="glow"></div>
+      <img src="https://via.placeholder.com/300x180" alt="Team Member 5">
+      <h3>Avnish Bhagwat</h3>
+      <p>+3D Desinger</p>
+    </div>
+    <div class="team-card">
+      <div class="glow"></div>
+      <img src="https://via.placeholder.com/300x180" alt="Team Member 6">
+      <h3>Zaara Saudagar</h3>
+      <p>Social Media Lead</p>
+    </div>
+  </div>
+  
+  
+
+  <a href="preventa-website.html" class="cta">Back to Home</a>
+</main>
+
+ <!--FOOTER +and ANIMATion GRADIENT -->
+    <footer class="gradient-footer">
+        <div class="footer-container">
+            <div class="footer-content">
+<div class="footer-column">
+    <div class="footer-brand-shop-row">
+        <div class="footer-brand">
+            <div class="logo">P</div>
+            <div class="footer-brand-text">
+                <h3>Selfietape</h3>
+                <div class="muted">"Ab na guesswork, na galti"</div>
+            </div>
+        </div>
+        <h3 class="footer-shop-title">Shop</h3>
+    </div>
+    <ul class="footer-links">
+        <li><a href="#">Accurate Tape <span class="dropdown-icon">▼</span></a></li>
+        <li><a href="#">All Products <span class="dropdown-icon">▼</span></a></li>
+        <li><a href="#">FAQs</a></li>
+    </ul>
+</div>
+               
+                <div class="footer-column">
+                    <h3>Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us <span class="dropdown-icon">▼</span></a></li>
+                        <li><a href="#">Our Team <span class="dropdown-icon">▼</span></a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Blog <span class="dropdown-icon">▼</span></a></li>
+                        <li><a href="#">Emergency Tips <span class="dropdown-icon">▼</span></a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Connect</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><span style="margin-right: 8px;">😊</span> Customer Support</a></li>
+                        <li><a href="#"><span style="margin-right: 8px;">👍</span> Feedback</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="copyright">
+                    © 2025 SCALORA. All rights reserved.
+                </div>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Services</a>
+                </div>
+            </div>
+        </div>
+    </footer>                         
+  </div>
+
+<script>
+// Create floating particles
+function createParticles() {
+    const particlesContainer = document.getElementById('particles');
+    const particleCount = 30;
+    
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        
+        // Random position
+        const left = Math.random() * 100;
+        particle.style.left = `${left}%`;
+        
+        // Random size
+        const size = Math.random() * 3 + 1;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        
+        // Random opacity
+        const opacity = Math.random() * 0.5 + 0.2;
+        particle.style.opacity = opacity;
+        
+        // Random animation duration and delay
+        const duration = Math.random() * 10 + 5;  //lower value = faster animation
+        const delay = Math.random() * 15;
+        particle.style.animationDuration = `${duration}s`;
+        particle.style.animationDelay = `${delay}s`;
+        
+        particlesContainer.appendChild(particle);
+    }
+}
+
+// Initialize particles when page loads
+window.addEventListener('load', createParticles);
+
+// Add scroll animation to team cards
+function checkScroll() {
+    const teamCards = document.querySelectorAll('.team-card');
+    const windowHeight = window.innerHeight;
+    
+    teamCards.forEach(card => {
+        const cardTop = card.getBoundingClientRect().top;
+        if (cardTop < windowHeight - 100) {
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }
+    });
+}
+
+// Initial check
+checkScroll();
+
+// Check on scroll
+window.addEventListener('scroll', checkScroll);
+
+// Add hover effect to team cards
+document.querySelectorAll('.team-card').forEach(card => {
+    card.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-10px) scale(1.02)';
+    });
+    
+    card.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0) scale(1)';
+    });
+});
+</script>
+</body>
+</html>
+	

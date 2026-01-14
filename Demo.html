@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Beta Testing - Selfietape | Tech Innovation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-1: #05294a;    /* deep sea */
+      --bg-2: #046582;    /* turquoise */
+      --accent: #ffd166;  /* warm highlight */
+      --glass: rgba(255,255,255,0.06);
+      --card: rgba(255,255,255,0.04);
+    }
+
+    /* Reset + base */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      color: #e6f7ff;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(4,101,130,0.18), transparent 5%), 
+                  linear-gradient(180deg, var(--bg-1), var(--bg-2));
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      cursor: none; /* ADDED: This hides default cursor so custom one shows */
+    }
+
+    /* Page layout */
+    .wrap { min-height: 100vh; display: flex; flex-direction: column; }
+    
+    /* Header */
+    header {
+      padding: 40px 6vw 30px 6vw;
+      display: flex; align-items: center; justify-content: space-between; gap: 20px;
+    }
+    .brand { display: flex; align-items: center; gap: 14px; }
+    .logo {
+      width: 54px; height: 54px; border-radius: 12px; 
+      background: linear-gradient(135deg, #03a9f4, #00bcd4); 
+      display: flex; align-items: center; justify-content: center; 
+      font-weight: 800; color: white; 
+      box-shadow: 0 6px 18px rgba(2,40,60,0.45);
+    }
+    h1 { font-family: 'Playfair Display', serif; margin: 0; font-size: clamp(20px, 3.2vw, 34px); letter-spacing: -0.02em; }
+    nav { display: flex; gap: 18px; align-items: center; }
+    nav a { color: rgba(230,247,255,0.9); text-decoration: none; font-weight: 600; padding: 8px 12px; border-radius: 10px; }
+    nav a:hover { background: rgba(255,255,255,0.03); }
+    nav a.active { background: rgba(255,255,255,0.08); color: var(--accent); }
+
+    /* Hero Section */
+    .beta-hero {
+      padding: 60px 6vw 40px 6vw;
+      text-align: center;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .beta-hero h2 {
+      font-size: clamp(28px, 4.5vw, 48px);
+      margin: 0 0 16px 0;
+      font-family: 'Playfair Display', serif;
+    }
+    .beta-hero p {
+      font-size: 18px;
+      line-height: 1.6;
+      color: rgba(230,247,255,0.85);
+      max-width: 700px;
+      margin: 0 auto 30px;
+    }
+
+    /* Digital Clock */
+    .clock-container {
+      margin: 40px auto;
+      text-align: center;
+    }
+    #clock {
+      font-size: 2.5em;
+      color: var(--accent);
+      letter-spacing: 3px;
+      background: rgba(255,255,255,0.05);
+      padding: 20px 40px;
+      border-radius: 16px;
+      box-shadow: 0 8px 25px rgba(2,30,50,0.45);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.03);
+      display: inline-block;
+      font-weight: 600;
+      animation: pulse 2s infinite alternate;
+    }
+    @keyframes pulse {
+      from { box-shadow: 0 8px 25px rgba(2,30,50,0.45); }
+      to { box-shadow: 0 8px 35px rgba(255,209,102,0.15); }
+    }
+
+    /* Beta Testing Section */
+    .beta-section {
+      padding: 60px 6vw;
+      display: flex;
+      justify-content: center;
+    }
+    .beta-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius: 18px;
+      padding: 40px;
+      box-shadow: 0 10px 30px rgba(2,30,50,0.45);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.03);
+      max-width: 600px;
+      width: 100%;
+      text-align: center;
+    }
+    .beta-card h3 {
+      font-size: 28px;
+      margin-bottom: 20px;
+      font-family: 'Playfair Display', serif;
+      color: var(--accent);
+    }
+    .beta-card p {
+      line-height: 1.6;
+      margin-bottom: 30px;
+      color: rgba(230,247,255,0.85);
+    }
+    .beta-features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin: 25px 0;
+    }
+    .beta-feature {
+      background: rgba(255,255,255,0.03);
+      padding: 15px;
+      border-radius: 12px;
+      font-size: 14px;
+    }
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 28px;
+      border-radius: 12px;
+      background: linear-gradient(90deg, var(--accent), #ffb347);
+      color: #002029;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 8px 24px rgba(255,153,51,0.12);
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(255,153,51,0.2);
+    }
+
+    /* Wave footer + decorative */
+    .ocean { position: relative; height: 240px; margin-top: auto; }
+    .waves { position: absolute; left: 0; right: 0; bottom: 0; }
+
+    /* Floating bubbles */
+    .bubble { position: absolute; border-radius: 50%; opacity: 0.18; mix-blend-mode: screen; }
+    .bubble.b1 { width: 140px; height: 140px; left: 4vw; top: 40vh; background: linear-gradient(180deg, #7be7ff55, #035a7a55); animation: floaty 8s ease-in-out infinite; }
+    .bubble.b2 { width: 90px; height: 90px; left: 28vw; top: 30vh; background: linear-gradient(180deg, #64d6ff44, #03788a33); animation: floaty 10s ease-in-out infinite; animation-delay: 0.6s; }
+    .bubble.b3 { width: 60px; height: 60px; left: 70vw; top: 20vh; background: linear-gradient(180deg, #aaffff33, #036b8b33); animation: floaty 12s ease-in-out infinite; animation-delay: 1.4s; }
+
+    @keyframes floaty { 
+      0% { transform: translateY(0); } 
+      50% { transform: translateY(-22px); } 
+      100% { transform: translateY(0); } 
+    }
+
+    /* Footer */
+    footer { 
+      padding: 28px 6vw; 
+      color: rgba(230,247,255,0.75); 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    .home-link {
+      background: linear-gradient(90deg, var(--accent), #ffb347);
+      padding: 10px 20px;
+      border-radius: 10px;
+      color: #002029;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    .home-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(255,153,51,0.2);
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 900px) {
+      nav { display: none; }
+      footer { flex-direction: column; text-align: center; }
+      .beta-features { grid-template-columns: 1fr; }
+    }
+
+    /* --- Cursor styles --- */
+    .cursor {
+      position: fixed; left: 0; top: 0; transform: translate(-50%, -50%); 
+      width: 36px; height: 36px; border-radius: 50%; pointer-events: none; 
+      z-index: 9999; mix-blend-mode: screen; backdrop-filter: blur(2px);
+      display: flex; align-items: center; justify-content: center; 
+      transition: width .12s ease, height .12s ease, opacity .12s ease, transform .12s ease;
+      border: 2px solid rgba(255,255,255,0.14); 
+      background: radial-gradient(circle at 40% 30%, rgba(255,255,255,0.12), rgba(0,0,0,0.1));
+      box-shadow: 0 6px 18px rgba(2,40,60,0.45);
+    }
+    .cursor .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 4px 10px rgba(255,209,102,0.18); }
+    .cursor.hidden { opacity: 0; }
+    .cursor.big { width: 86px; height: 86px; }
+
+    /* clickable feedback area */
+    .pulse { position: fixed; border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); opacity: 0; }
+
+    /* small utility */
+    .muted { opacity: 0.8; font-size: 14px; }
+	
+.glow-button {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(45deg, #0c2461, #1e3799, #4a69bd, #6a89cc);
+    background-size: 400% 400%;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    animation: gradientShift 3s ease infinite;
+}
+
+.glow-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s ease;
+}
+
+.glow-button:hover::before {
+    left: 100%;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Cursor-following shine effect */
+.cursor-glow {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+    /* NEW: Animated gradient background for footer */
+    .gradient-footer {
+        position: relative;
+        background: linear-gradient(125deg, rgb(5, 7, 20), rgb(10, 17, 40) 25%, rgb(15, 31, 75) 50%, rgb(26, 11, 46) 75%, rgb(10, 10, 10)) 0% 0% / 400% 400%;
+        animation: gradientShift 5s ease infinite;
+        padding: 40px 0 20px;
+        margin-top: auto;
+        color: white;
+    }
+    
+    @keyframes gradientShift {
+        0% {
+            background-position: 0% 0%;
+        }
+        50% {
+            background-position: 100% 100%;
+        }
+        100% {
+            background-position: 0% 0%;
+        }
+    }
+    
+    /* Footer container */
+    .footer-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 px;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .footer-content {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 30px;
+        margin-bottom: 30px;
+    }
+    
+    .footer-column h3 {
+        font-size: 18px;
+        margin-bottom: 20px;
+        font-weight: 600;
+        position: relative;
+        padding-bottom: 8px;
+    }
+    
+    .footer-column h3::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 40px;
+        height: 3px;
+        background-color: #3498db;
+    }
+    
+    .footer-links {
+        list-style: none;
+    }
+    
+    .footer-links li {
+        margin-bottom: 12px;
+    }
+    
+    .footer-links a {
+        text-decoration: none;
+        color: #ddd;
+        font-size: 15px;
+        transition: color 0.3s;
+        display: flex;
+        align-items: center;
+    }
+    
+    .footer-links a:hover {
+        color: #ffd166; /* Using your accent color for hover */
+    }
+    
+    .dropdown-icon {
+        margin-left: 5px;
+        font-size: 12px;
+        color: #aaa;
+    }
+    
+    .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        padding-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+    
+    .copyright {
+        color: #ccc;
+        font-size: 14px;
+    }
+    
+    .footer-bottom-links {
+        display: flex;
+        gap: 20px;
+    }
+    
+    .footer-bottom-links a {
+        text-decoration: none;
+        color: #ccc;
+        font-size: 14px;
+        transition: color 0.3s;
+    }
+    
+    .footer-bottom-links a:hover {
+        color: #ffd166; /* Using your accent color for hover */
+    }
+    
+	.gradient-footer {
+    padding: 40px 0 20px !important; /* Remove left/right padding */
+}
+
+.footer-container {
+    padding: 0 20px !important; /* Adjust this value as needed */
+    max-width: 100% !important;
+}
+
+    /* Logo in footer */
+    .footer-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+    
+    .footer-logo .logo {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #03a9f4, #00bcd4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        color: white;
+        font-size: 14px;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 992px) {
+        .footer-content {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .footer-content {
+            grid-template-columns: 1fr;
+        }
+        
+        .footer-bottom {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .footer-bottom-links {
+            justify-content: center;
+            width: 100%;
+        }
+    }
+	
+	/* Footer brand styling */
+.footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.footer-brand-text h3 {
+    margin: 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    letter-spacing: -0.02em;
+}
+
+.footer-brand-text .muted {
+    opacity: 0.8;
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+.footer-brand-shop-row {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.footer-brand-text h3 {
+    margin: 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    letter-spacing: -0.02em;
+}
+
+.footer-brand-text .muted {
+    opacity: 0.8;
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+.footer-shop-title {
+    margin: 0 !important;
+}
+    /* --- Cursor styles --- */
+    .cursor{
+      position:fixed;left:0;top:0;transform:translate(-50%,-50%);width:36px;height:36px;border-radius:50%;pointer-events:none;z-index:9999;mix-blend-mode:screen;backdrop-filter: blur(2px);
+      display:flex;align-items:center;justify-content:center;transition:width .12s ease,height .12s ease,opacity .12s ease,transform .12s ease;
+      border:2px solid rgba(255,255,255,0.14);background:radial-gradient(circle at 40% 30%, rgba(255,255,255,0.12), rgba(0,0,0,0.1));
+      box-shadow:0 6px 18px rgba(2,40,60,0.45);
+    }
+    .cursor .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 4px 10px rgba(255,209,102,0.18)}
+    .cursor.hidden{opacity:0}
+    .cursor.big{width:86px;height:86px}
+
+    /* clickable feedback area */
+    .pulse{position:fixed;border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:0}
+
+    /* small utility */
+    .muted{opacity:0.8;font-size:14px}
+	
+	.grid-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr; /* Creates two equal-width columns */
+      column-gap: 20px;
+    }
+
+    .div1, .div2 {
+      padding: 10px;
+      border: 0px solid black;
+    }
+	
+	/* Shift footer content to the right */
+.footer-content {
+    margin-left: 200px; /* Adjust this value based on how much space you need */
+}
+
+/* Or if you want more control, use grid with empty first column */
+.footer-content {
+    grid-template-columns: 200px repeat(4, 1fr); /* 200px empty space + 4 columns */
+    gap: 30px;
+}
+
+/* Alternative: Use padding on first column */
+.footer-column:first-child {
+    grid-column: 2; /* Start from second column */
+}
+
+/* Or create specific layout */
+.footer-logo-space {
+    grid-column: 1;
+    display: flex;
+    align-items: flex-start;
+}
+
+.footer-content-columns {
+    grid-column: 2 / span 4;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+}
+
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo">ST</div>
+        <div>
+          <h1>Selfietape</h1>
+          <div class="muted">“Ab Na Guesswork, Na Galti”</div>
+        </div>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="features.html">Features</a>
+        <a href="Shop.html">Shop</a>
+		<a href="contact.html">Blog</a>
+        <a href="Demo.html" class="active">Demo</a>
+        <a href="Team.html">Team</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="beta-hero">
+        <h2>Beta Testing Program</h2>
+        <p>Be among the first to experience Selfietape's next-generation innovation and help us drive a revolution in measurement.</p>
+        
+        <div class="clock-container">
+          <div id="clock">--:--:--</div>
+        </div>
+      </section>
+
+      <section class="beta-section">
+        <div class="beta-card">
+          <h3>Join Our Beta Testing Program</h3>
+          <p>Help shape the future of emergency response technology by testing our innovative solutions before public release. Your feedback will directly influence product development.</p>
+          
+          <div class="beta-features">
+            <div class="beta-feature">Early Product Access</div>
+            <div class="beta-feature">Direct Developer Feedback</div>
+            <div class="beta-feature">Exclusive Beta Community</div>
+            <div class="beta-feature">Priority Support</div>
+			<div class="beta-feature">First Hand Experience</div>
+			<div class="beta-feature">Exclusive Merchandise</div>
+          </div>
+          
+         <button class="glow-button" id="demo-button">
+    Try Demo
+    <div class="cursor-glow" id="button-glow"></div>
+</button>
+          
+          <div class="muted" style="margin-top: 20px;">
+            Limited spots available. Applications reviewed on a rolling basis.
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="bubble b1"></div>
+    <div class="bubble b2"></div>
+    <div class="bubble b3"></div>
+
+    <div class="ocean" aria-hidden="true">
+      <svg class="waves" viewBox="0 0 1440 320" preserveAspectRatio="none" style="width:100%;height:240px;display:block;">
+        <defs>
+          <linearGradient id="g1" x1="0" x2="1">
+            <stop offset="0%" stop-color="#00a2d1" stop-opacity="0.18" />
+            <stop offset="100%" stop-color="#033a5b" stop-opacity="0.22" />
+          </linearGradient>
+        </defs>
+        <path fill="url(#g1)" d="M0,160 C200,220 400,80 720,160 C1040,240 1200,120 1440,160 L1440,320 L0,320 Z"></path>
+        <path fill="#062c45" opacity="0.12" d="M0,200 C220,120 420,260 720,210 C1020,160 1220,230 1440,200 L1440,320 L0,320 Z"></path>
+      </svg>
+    </div>
+
+    <!--FOOTER WITH ANIMATED GRADIENT -->
+    <footer class="gradient-footer">
+        <div class="footer-container">
+            <div class="footer-content">
+<div class="footer-column">
+    <div class="footer-brand-shop-row">
+        <div class="footer-brand">
+            <div class="logo">P</div>
+            <div class="footer-brand-text">
+                <h3>Selfietape</h3>
+                <div class="muted">“Ab Na Guesswork, Na Galti”</div>
+            </div>
+        </div>
+        <h3 class="footer-shop-title">Shop</h3>
+    </div>
+    <ul class="footer-links">
+        <li><a href="#">Accurate Tape <span class="dropdown-icon">▼</span></a></li>
+        <li><a href="#">All Products <span class="dropdown-icon">▼</span></a></li>
+        <li><a href="#">FAQs</a></li>
+    </ul>
+</div>
+    </ul>
+               
+                <div class="footer-column">
+                    <h3>Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us <span class="dropdown-icon">▼</span></a></li>
+                        <li><a href="#">Our Team <span class="dropdown-icon">▼</span></a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Blog <span class="dropdown-icon">▼</span></a></li>
+                        <li><a href="#">Emergency Tips <span class="dropdown-icon">▼</span></a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Connect</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><span style="margin-right: 8px;">😊</span> Customer Support</a></li>
+                        <li><a href="#"><span style="margin-right: 8px;">👍</span> Feedback</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="copyright">
+                    © 2025 SCALORA. All rights reserved.
+                </div>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Services</a>
+                </div>
+            </div>
+        </div>
+    </footer>                         
+  </div>
+
+  <!-- Custom circular cursor + interactions -->
+  <div class="cursor" id="cursor"><div class="dot"></div></div>
+  <div class="pulse" id="pulse"></div>
+
+  <script>
+    // Live Digital Clock
+    function updateClock() {
+      const now = new Date();
+      const hrs = String(now.getHours()).padStart(2, '0');
+      const mins = String(now.getMinutes()).padStart(2, '0');
+      const secs = String(now.getSeconds()).padStart(2, '0');
+      document.getElementById("clock").textContent = `${hrs}:${mins}:${secs}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Demo Button Modal
+    document.getElementById('demo-button').addEventListener('click', function() {
+      // Create a modal for demo application
+      const modal = document.createElement('div');
+      modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+      `;
+      
+      const modalContent = document.createElement('div');
+      modalContent.style.cssText = `
+        background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+        border-radius: 18px;
+        padding: 40px;
+        max-width: 500px;
+        width: 90%;
+        text-align: center;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.05);
+        box-shadow: 0 15px 35px rgba(2,30,50,0.6);
+      `;
+      
+      modalContent.innerHTML = `
+        <h3 style="font-family: 'Playfair Display', serif; margin-bottom: 20px; color: var(--accent);">Beta Program Application</h3>
+        <p style="margin-bottom: 15px; line-height: 1.6; font-size: 16px;">
+          <strong>Limited spots available!</strong> Applications are reviewed on a rolling basis.
+        </p>
+        <p style="margin-bottom: 25px; line-height: 1.6; color: rgba(230,247,255,0.8);">
+          Join our exclusive beta testing program and be among the first to experience Preventa's innovative emergency response technology.
+        </p>
+        <div style="background: rgba(255,209,102,0.1); padding: 15px; border-radius: 10px; margin-bottom: 20px; border-left: 4px solid var(--accent);">
+          <p style="margin: 0; font-size: 14px; color: var(--accent);">
+            <strong>Next application review:</strong> ${getNextReviewDate()}
+          </p>
+        </div>
+        <button class="cta-button" id="apply-now" style="margin: 10px;">Apply Now</button>
+        <button class="cta-button" id="close-modal" style="margin: 10px; background: rgba(255,255,255,0.1); color: white;">Close</button>
+      `;
+      
+      modal.appendChild(modalContent);
+      document.body.appendChild(modal);
+      
+      // Apply Now button
+      document.getElementById('apply-now').addEventListener('click', function() {
+        modalContent.innerHTML = `
+          <h3 style="font-family: 'Playfair Display', serif; margin-bottom: 20px; color: var(--accent);">Application Submitted!</h3>
+          <p style="margin-bottom: 25px; line-height: 1.6; color: rgba(230,247,255,0.8);">
+            Thank you for your interest! We've received your application and will review it in the next batch.
+          </p>
+          <p style="margin-bottom: 25px; line-height: 1.6; color: rgba(230,247,255,0.8); font-size: 14px;">
+            You'll receive a confirmation email shortly with more details about the beta program timeline.
+          </p>
+          <button class="cta-button" id="close-modal" style="margin-top: 10px;">Close</button>
+        `;
+        
+        document.getElementById('close-modal').addEventListener('click', function() {
+          document.body.removeChild(modal);
+        });
+      });
+      
+      // Close modal button
+      document.getElementById('close-modal').addEventListener('click', function() {
+        document.body.removeChild(modal);
+      });
+      
+      // Close modal when clicking outside
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+          document.body.removeChild(modal);
+        }
+      });
+    });
+
+    // Function to get next review date (7 days from now)
+    function getNextReviewDate() {
+      const nextWeek = new Date();
+      nextWeek.setDate(nextWeek.getDate() + 7);
+      return nextWeek.toLocaleDateString('en-US', { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      });
+    }
+
+    // Cursor-following glow effect for button
+    const demoButton = document.getElementById('demo-button');
+    const buttonGlow = document.getElementById('button-glow');
+
+    if (demoButton && buttonGlow) {
+      demoButton.addEventListener('mousemove', (e) => {
+        const rect = demoButton.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        buttonGlow.style.left = x + 'px';
+        buttonGlow.style.top = y + 'px';
+        buttonGlow.style.opacity = '1';
+      });
+
+      demoButton.addEventListener('mouseleave', () => {
+        buttonGlow.style.opacity = '0';
+      });
+
+      // If you want the gradient to also follow cursor
+      demoButton.addEventListener('mousemove', (e) => {
+        const rect = demoButton.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        
+        demoButton.style.backgroundPosition = `${x}% ${y}%`;
+      });
+    }
+
+    // Cursor functionality
+    (function(){
+      const cursor = document.getElementById('cursor');
+      if (!cursor) return; // Safety check
+      
+      const pulseContainer = document.getElementById('pulse');
+      let mouseX = window.innerWidth/2, mouseY = window.innerHeight/2;
+      let posX = mouseX, posY = mouseY;
+      let raf = null;
+
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+      // follow loop with slight lag
+      function loop(){
+        posX += (mouseX - posX) * 0.18;
+        posY += (mouseY - posY) * 0.18;
+        cursor.style.transform = `translate(${posX}px, ${posY}px) translate(-50%, -50%)`;
+        raf = requestAnimationFrame(loop);
+      }
+      raf = requestAnimationFrame(loop);
+
+      // mouse move
+      window.addEventListener('mousemove', e=>{
+        mouseX = e.clientX; mouseY = e.clientY;
+        cursor.classList.remove('hidden');
+      });
+
+      window.addEventListener('mouseleave', ()=>cursor.classList.add('hidden'));
+      window.addEventListener('mouseenter', ()=>cursor.classList.remove('hidden'));
+
+      // CLICK PULSE: creates multiple fading pulses
+      window.addEventListener('click', (e)=>{
+        for(let i=0; i<2; i++){ // create 2 pulses for better effect
+          const pulse = document.createElement('div');
+          pulse.className = 'pulse';
+          document.body.appendChild(pulse);
+
+          pulse.style.left = e.clientX + 'px';
+          pulse.style.top = e.clientY + 'px';
+          pulse.style.width = '10px';
+          pulse.style.height = '10px';
+          pulse.style.opacity = '0.18';
+          pulse.style.background = 'radial-gradient(circle, rgba(255,209,102,0.18), transparent 60%)';
+          pulse.style.transition = 'width 420ms cubic-bezier(.2,.9,.3,1), height 420ms cubic-bezier(.2,.9,.3,1), opacity 420ms linear, transform 420ms ease-out';
+          pulse.style.position = 'fixed';
+          pulse.style.pointerEvents = 'none';
+          pulse.style.borderRadius = '50%';
+          pulse.style.zIndex = '9998';
+
+          requestAnimationFrame(()=>{
+            pulse.style.width = '220px';
+            pulse.style.height = '220px';
+            pulse.style.opacity = '0';
+            pulse.style.transform = 'translate(-50%, -50%)';
+          });
+
+          setTimeout(()=>pulse.remove(), 450); // remove after animation
+        }
+      });
+
+      // interactive expansion on links / buttons
+      const hoverables = 'a,button,input,textarea,select,[role="button"]';
+      document.addEventListener('mouseover', e=>{
+        if(e.target.closest(hoverables)){
+          cursor.classList.add('big');
+          cursor.style.transitionTimingFunction = 'cubic-bezier(.18,.9,.3,1)';
+        }
+      });
+      document.addEventListener('mouseout', e=>{
+        if(e.target.closest(hoverables)){
+          cursor.classList.remove('big');
+        }
+      });
+
+      // keyboard toggle for motion
+      let motionOn = true;
+      function toggleMotion(state){
+        motionOn = state === undefined ? !motionOn : !!state;
+        const bubbles = document.querySelectorAll('.bubble');
+        bubbles.forEach((b,i)=> b.style.animationPlayState = motionOn ? 'running' : 'paused');
+        document.body.style.animationPlayState = motionOn ? 'running' : 'paused';
+      }
+      window.addEventListener('keydown',(e)=>{ if(e.code==='Space') { e.preventDefault(); toggleMotion(); } });
+
+      if(prefersReduced){
+        toggleMotion(false);
+      }
+
+      // touch fallback: show a subtle cursor on touchstart and hide after
+      window.addEventListener('touchstart',(e)=>{
+        cursor.classList.remove('hidden');
+        const t = e.touches[0]; mouseX = t.clientX; mouseY = t.clientY;
+        setTimeout(()=>cursor.classList.add('hidden'), 1500);
+      });
+
+      // clean up
+      window.addEventListener('unload', ()=> cancelAnimationFrame(raf));
+    })();
+  </script>
+</body>
+</html>
