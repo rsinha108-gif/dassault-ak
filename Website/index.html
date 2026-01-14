@@ -1,0 +1,1142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Selfietape-every-inch-matters</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-1: #05294a;    /* deep sea */
+      --bg-2: #046582;    /* turquoise */
+      --accent: #ffd166;  /* warm highlight */
+      --glass: rgba(255,255,255,0.06);
+      --card: rgba(255,255,255,0.04);
+    }
+
+    /* Reset + base */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      color: #e6f7ff;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(4,101,130,0.18), transparent 5%), linear-gradient(180deg,var(--bg-1),var(--bg-2));
+      overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      cursor: none; /* we'll draw a custom circular cursor */
+    }
+
+    /* Page layout */
+    .wrap{min-height:100vh;display:flex;flex-direction:column}
+    header{
+      padding:40px 6vw 30px 6vw;
+      display:flex;align-items:center;justify-content:space-between;gap:20px;
+      position: relative;
+      z-index: 10;
+    }
+    .brand{display:flex;align-items:center;gap:14px}
+    .logo{
+      width:54px;height:54px;border-radius:12px;background:linear-gradient(135deg,#03a9f4,#00bcd4);display:flex;align-items:center;justify-content:center;font-weight:800;color:white;box-shadow:0 6px 18px rgba(2,40,60,0.45);
+      animation: logoGlow 4s ease-in-out infinite;
+    }
+    @keyframes logoGlow {
+      0%, 100% { box-shadow: 0 6px 18px rgba(2,40,60,0.45); }
+      50% { box-shadow: 0 6px 25px rgba(2,40,60,0.7), 0 0 15px rgba(3,169,244,0.4); }
+    }
+    h1{font-family:'Playfair Display', serif;margin:0;font-size:clamp(20px,3.2vw,34px);letter-spacing:-0.02em}
+    nav{display:flex;gap:18px;align-items:center}
+    nav a{color:rgba(230,247,255,0.9);text-decoration:none;font-weight:600;padding:8px 12px;border-radius:10px;position:relative;overflow:hidden;transition:all 0.3s ease;}
+    nav a::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+    nav a:hover::before {
+      left: 100%;
+    }
+    nav a:hover{background:rgba(255,255,255,0.03);transform: translateY(-2px);}
+
+    /* Hero */
+    .hero{
+      padding:30px 6vw 80px 6vw;
+      position:relative;display:grid;grid-template-columns:1fr 420px;gap:40px;align-items:center
+    }
+    .hero-card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:18px;
+      padding:28px;
+      box-shadow:0 10px 30px rgba(2,30,50,0.45);
+      backdrop-filter: blur(6px);
+      border:1px solid rgba(255,255,255,0.03);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.03), transparent);
+      transform: rotate(45deg);
+      animation: shimmer 8s linear infinite;
+    }
+    @keyframes shimmer {
+      0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
+    .hero h2{margin:0 0 12px 0;font-size:clamp(22px,3.6vw,40px);position:relative;}
+    .lead{color:rgba(230,247,255,0.87);line-height:1.5;margin-bottom:16px}
+    .cta{
+      display:inline-flex;
+      align-items:center;
+      gap:12px;
+      padding:12px 18px;
+      border-radius:12px;
+      background:linear-gradient(90deg,var(--accent),#ffb347);
+      color:#002029;
+      font-weight:700;
+      text-decoration:none;
+      box-shadow:0 8px 24px rgba(255,153,51,0.12);
+      position:relative;
+      overflow:hidden;
+      transition:all 0.3s ease;
+    }
+    .cta::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      transition: left 0.5s;
+    }
+    .cta:hover::before {
+      left: 100%;
+    }
+    .cta:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(255,153,51,0.25);
+    }
+
+    /* Info column */
+    .info{display:grid;gap:12px}
+    .pill{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      padding:8px 12px;
+      border-radius:999px;
+      background:var(--glass);
+      font-weight:700;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .pill::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      transition: left 0.5s;
+    }
+    .pill:hover::before {
+      left: 100%;
+    }
+    .pill:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    /* Wave footer + decorative */
+    .ocean{position:relative;height:240px;margin-top:auto}
+    .waves{position:absolute;left:0;right:0;bottom:0}
+
+    /* Floating bubbles */
+    .bubble{position:absolute;border-radius:50%;opacity:0.18;mix-blend-mode:screen}
+    .bubble.b1{width:140px;height:140px;left:4vw;top:40vh;background:linear-gradient(180deg,#7be7ff55,#035a7a55);animation:floaty 8s ease-in-out infinite}
+    .bubble.b2{width:90px;height:90px;left:28vw;top:30vh;background:linear-gradient(180deg,#64d6ff44,#03788a33);animation:floaty 10s ease-in-out infinite;animation-delay:0.6s}
+    .bubble.b3{width:60px;height:60px;left:70vw;top:20vh;background:linear-gradient(180deg,#aaffff33,#036b8b33);animation:floaty 12s ease-in-out infinite;animation-delay:1.4s}
+
+    @keyframes floaty{0%{transform:translateY(0)}50%{transform:translateY(-22px)}100%{transform:translateY(0)}}
+
+    /* Cards grid */
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px;margin-top:20px}
+    .card{
+      background:var(--card);
+      padding:18px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.025);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(255,255,255,0.05), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .card:hover::before {
+      opacity: 1;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+    .card h3{margin:0 0 8px 0}
+
+    /* NEW: Animated gradient background for footer */
+    .gradient-footer {
+        position: relative;
+        background: linear-gradient(125deg, rgb(5, 7, 20), rgb(10, 17, 40) 25%, rgb(15, 31, 75) 50%, rgb(26, 11, 46) 75%, rgb(10, 10, 10)) 0% 0% / 400% 400%;
+        animation: gradientShift 5s ease infinite;
+        padding: 40px 0 20px;
+        margin-top: auto;
+        color: white;
+    }
+    
+    @keyframes gradientShift {
+        0% {
+            background-position: 0% 0%;
+        }
+        50% {
+            background-position: 100% 100%;
+        }
+        100% {
+            background-position: 0% 0%;
+        }
+    }
+    
+    /* Footer container */
+    .footer-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 px;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .footer-content {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 30px;
+        margin-bottom: 30px;
+    }
+    
+    .footer-column h3 {
+        font-size: 18px;
+        margin-bottom: 20px;
+        font-weight: 600;
+        position: relative;
+        padding-bottom: 8px;
+    }
+    
+    .footer-column h3::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 40px;
+        height: 3px;
+        background-color: #3498db;
+    }
+    
+    .footer-links {
+        list-style: none;
+    }
+    
+    .footer-links li {
+        margin-bottom: 12px;
+    }
+    
+    .footer-links a {
+        text-decoration: none;
+        color: #ddd;
+        font-size: 15px;
+        transition: color 0.3s;
+        display: flex;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .footer-links a::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: #ffd166;
+      transition: width 0.3s ease;
+    }
+    
+    .footer-links a:hover::before {
+      width: 100%;
+    }
+    
+    .footer-links a:hover {
+        color: #ffd166; /* Using your accent color for hover */
+    }
+    
+    .dropdown-icon {
+        margin-left: 5px;
+        font-size: 12px;
+        color: #aaa;
+    }
+    
+    .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        padding-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+    
+    .copyright {
+        color: #ccc;
+        font-size: 14px;
+    }
+    
+    .footer-bottom-links {
+        display: flex;
+        gap: 20px;
+    }
+    
+    .footer-bottom-links a {
+        text-decoration: none;
+        color: #ccc;
+        font-size: 14px;
+        transition: color 0.3s;
+    }
+    
+    .footer-bottom-links a:hover {
+        color: #ffd166; /* Using your accent color for hover */
+    }
+    
+	.gradient-footer {
+    padding: 40px 0 20px !important; /* Remove left/right padding */
+}
+
+.footer-container {
+    padding: 0 20px !important; /* Adjust this value as needed */
+    max-width: 100% !important;
+}
+
+    /* Logo in footer */
+    .footer-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+    
+    .footer-logo .logo {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #03a9f4, #00bcd4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        color: white;
+        font-size: 14px;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 992px) {
+        .footer-content {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .footer-content {
+            grid-template-columns: 1fr;
+        }
+        
+        .footer-bottom {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .footer-bottom-links {
+            justify-content: center;
+            width: 100%;
+        }
+    }
+	
+	/* Footer brand styling */
+.footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.footer-brand-text h3 {
+    margin: 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    letter-spacing: -0.02em;
+}
+
+.footer-brand-text .muted {
+    opacity: 0.8;
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+.footer-brand-shop-row {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.footer-brand-text h3 {
+    margin: 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    letter-spacing: -0.02em;
+}
+
+.footer-brand-text .muted {
+    opacity: 0.8;
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+.footer-shop-title {
+    margin: 0 !important;
+}
+    /* --- Cursor styles --- */
+    .cursor{
+      position:fixed;left:0;top:0;transform:translate(-50%,-50%);width:36px;height:36px;border-radius:50%;pointer-events:none;z-index:9999;mix-blend-mode:screen;backdrop-filter: blur(2px);
+      display:flex;align-items:center;justify-content:center;transition:width .12s ease,height .12s ease,opacity .12s ease,transform .12s ease;
+      border:2px solid rgba(255,255,255,0.14);background:radial-gradient(circle at 40% 30%, rgba(255,255,255,0.12), rgba(0,0,0,0.1));
+      box-shadow:0 6px 18px rgba(2,40,60,0.45);
+    }
+    .cursor .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 4px 10px rgba(255,209,102,0.18)}
+    .cursor.hidden{opacity:0}
+    .cursor.big{width:86px;height:86px}
+
+    /* clickable feedback area */
+    .pulse{position:fixed;border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:0}
+
+    /* small utility */
+    .muted{opacity:0.8;font-size:14px}
+	
+	.grid-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr; /* Creates two equal-width columns */
+      column-gap: 20px;
+    }
+
+    .div1, .div2 {
+      padding: 10px;
+      border: 0px solid black;
+    }
+	
+	/* Shift footer content to the right */
+.footer-content {
+    margin-left: 200px; /* Adjust this value based on how much space you need */
+}
+
+/* Or if you want more control, use grid with empty first column */
+.footer-content {
+    grid-template-columns: 200px repeat(4, 1fr); /* 200px empty space + 4 columns */
+    gap: 30px;
+}
+
+/* Alternative: Use padding on first column */
+.footer-column:first-child {
+    grid-column: 2; /* Start from second column */
+}
+
+/* Or create specific layout */
+.footer-logo-space {
+    grid-column: 1;
+    display: flex;
+    align-items: flex-start;
+}
+
+.footer-content-columns {
+    grid-column: 2 / span 4;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+}
+
+/* - Wave Animation */
+.waves path {
+    animation: waveMove 2s ease-in-out infinite;
+}
+
+@keyframes waveMove {
+    0% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(-30px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+/* For more realistic layered wave motion */
+.waves path:first-child {
+    animation: waveMove 1s ease-in-out infinite;
+}
+
+.waves path:last-child {
+    animation: waveMove 1.5s ease-in-out infinite;
+    animation-delay: 0.2s;
+}
+
+/* : Particle background */
+.particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  animation: particleFloat linear infinite;
+}
+
+@keyframes particleFloat {
+  0% {
+    transform: translateY(100vh) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* NEW: Text animation */
+.animated-text {
+  background: linear-gradient(90deg, #ffd166, #ffb347, #ffd166);
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textShine 3s linear infinite;
+}
+
+@keyframes textShine {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+/* : Glitch effect */
+.glitch {
+  position: relative;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch::before {
+  left: 2px;
+  text-shadow: -1px 0 red;
+  clip: rect(44px, 450px, 56px, 0);
+  animation: glitch-anim 5s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+  left: -2px;
+  text-shadow: -1px 0 blue;
+  clip: rect(44px, 450px, 56px, 0);
+  animation: glitch-anim2 5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+  0% { clip: rect(42px, 9999px, 44px, 0); }
+  5% { clip: rect(12px, 9999px, 59px, 0); }
+  10% { clip: rect(48px, 9999px, 29px, 0); }
+  15% { clip: rect(42px, 9999px, 73px, 0); }
+  20% { clip: rect(63px, 9999px, 27px, 0); }
+  25% { clip: rect(34px, 9999px, 55px, 0); }
+  30% { clip: rect(86px, 9999px, 73px, 0); }
+  35% { clip: rect(20px, 9999px, 20px, 0); }
+  40% { clip: rect(26px, 9999px, 60px, 0); }
+  45% { clip: rect(25px, 9999px, 66px, 0); }
+  50% { clip: rect(57px, 9999px, 98px, 0); }
+  55% { clip: rect(5px, 9999px, 46px, 0); }
+  60% { clip: rect(82px, 9999px, 31px, 0); }
+  65% { clip: rect(54px, 9999px, 27px, 0); }
+  70% { clip: rect(28px, 9999px, 99px, 0); }
+  75% { clip: rect(45px, 9999px, 69px, 0); }
+  80% { clip: rect(23px, 9999px, 85px, 0); }
+  85% { clip: rect(54px, 9999px, 84px, 0); }
+  90% { clip: rect(45px, 9999px, 47px, 0); }
+  95% { clip: rect(37px, 9999px, 20px, 0); }
+  100% { clip: rect(4px, 9999px, 91px, 0); }
+}
+
+@keyframes glitch-anim2 {
+  0% { clip: rect(65px, 9999px, 100px, 0); }
+  5% { clip: rect(52px, 9999px, 74px, 0); }
+  10% { clip: rect(79px, 9999px, 85px, 0); }
+  15% { clip: rect(75px, 9999px, 5px, 0); }
+  20% { clip: rect(67px, 9999px, 61px, 0); }
+  25% { clip: rect(14px, 9999px, 79px, 0); }
+  30% { clip: rect(1px, 9999px, 66px, 0); }
+  35% { clip: rect(86px, 9999px, 30px, 0); }
+  40% { clip: rect(23px, 9999px, 98px, 0); }
+  45% { clip: rect(85px, 9999px, 72px, 0); }
+  50% { clip: rect(71px, 9999px, 75px, 0); }
+  55% { clip: rect(2px, 9999px, 48px, 0); }
+  60% { clip: rect(30px, 9999px, 16px, 0); }
+  65% { clip: rect(59px, 9999px, 50px, 0); }
+  70% { clip: rect(41px, 9999px, 62px, 0); }
+  75% { clip: rect(2px, 9999px, 82px, 0); }
+  80% { clip: rect(47px, 9999px, 73px, 0); }
+  85% { clip: rect(3px, 9999px, 27px, 0); }
+  90% { clip: rect(26px, 9999px, 55px, 0); }
+  95% { clip: rect(42px, 9999px, 97px, 0); }
+  100% { clip: rect(38px, 9999px, 49px, 0); }
+}
+
+/* : Parallax scrolling effect */
+.parallax {
+  transform-style: preserve-3d;
+}
+
+.parallax-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* : Hover effects for cards */
+.card-hover {
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card-hover:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* : Neon glow effect */
+.neon-glow {
+  text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #ffd166, 0 0 20px #ffd166, 0 0 25px #ffd166;
+  animation: neonPulse 2s infinite alternate;
+}
+
+@keyframes neonPulse {
+  from { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #ffd166, 0 0 20px #ffd166, 0 0 25px #ffd166; }
+  to { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ffd166, 0 0 40px #ffd166, 0 0 50px #ffd166; }
+}
+
+/* : Typing animation */
+.typing {
+  overflow: hidden;
+  border-right: 2px solid #ffd166;
+  white-space: nowrap;
+  animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: #ffd166 }
+}
+
+/* : Magnetic button effect */
+.magnetic {
+  display: inline-block;
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.magnetic:hover {
+  transform: scale(1.05);
+}
+
+/* : Scroll-triggered animations */
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* : Background grid pattern */
+.grid-pattern {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  z-index: -2;
+  pointer-events: none;
+}
+
+/* : Liquid button effect */
+.liquid-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.liquid-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s;
+}
+
+.liquid-button:hover::before {
+  transform: translateX(100%);
+}
+
+/* : 3D card flip */
+.card-3d {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.card-3d-inner {
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.card-3d:hover .card-3d-inner {
+  transform: rotateY(180deg);
+}
+
+.card-3d-front, .card-3d-back {
+  backface-visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.card-3d-back {
+  transform: rotateY(180deg);
+}
+
+/* : Particle trail effect */
+.particle-trail {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 50%;
+  background: rgba(255, 209, 102, 0.6);
+  animation: trailFade 0.6s forwards;
+}
+
+@keyframes trailFade {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(0); opacity: 0; }
+}
+
+  </style>
+</head>
+<body>
+  <!-- NEW: Background elements -->
+  <div class="particles" id="particles"></div>
+  <div class="grid-pattern"></div>
+  
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo">ST</div>
+        <div>
+          <h1 class="animated-text">Selfietape</h1>
+          <div class="muted">“Ab Na Guesswork, Na Galti”</div>
+        </div>
+      </div>
+      <nav>
+	    <a href="#Home" class="magnetic">Home</a>
+        <a href="Features.html" class="magnetic">Features</a>
+		<a href="Shop.html" class="magnetic">Shop</a>
+        <a href="Demo.html" class="magnetic">Demo</a>
+        <a href="contact.html" class="magnetic">Blog</a>
+		<a href="Team.html" class="magnetic">Team</a>
+		</nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-card">
+          <h2 class="fade-in">'Selfietape — Har Inch Ka Perfect Hisaab'</h2>
+          <p class="lead fade-in">Stop Measuring Blind.
+              Whether you're tailoring a dress, building a shelf, or planning a space, inaccurate measurements are the #1 cause of wasted time, money, and materials. SelfieTape eliminates the guesswork.
+                It guides you to take perfectly aligned, photo-documented measurements—all by yourself. Professional accuracy, for everyone.</p>
+          <a class="cta liquid-button magnetic" href="Demo.html">Try the demo(Under Progress)</a>
+
+          <div class="grid">
+            <div class="card card-hover fade-in">
+              <h3>High Measurement Accuracy</h3>
+              <p class="muted">
+                  SelfieTape is designed to deliver precise and consistent measurements every time.
+				  It helps eliminate human errors and guesswork, ensuring a perfect fit from the first stitch</p>
+            </div>
+            <div class="card card-hover fade-in">
+              <h3>Easy-to-Use Design</h3>
+              <p class="muted">With its simple and intuitive design, SelfieTape can be used by beginners as well as professional tailors.
+			  No special training or complex setup required—just measure and stitch.</p>
+            </div>
+            <div class="card card-hover fade-in">
+              <h3>Reduces Alterations & Rework</h3>
+              <p class="muted">Accurate measurements mean fewer fitting issues.
+			  SelfieTape helps reduce alterations, saving fabric, time, and effort while improving customer satisfaction.</p>
+            </div>
+			<div class="card card-hover fade-in">
+              <h3>Versatile Usage</h3>
+              <p class="muted">Suitable for measuring shirts, trousers, suits, blouses, dresses, and more. One tool that meets multiple tailoring needs.</p>
+            </div>
+          </div>
+        </div>
+
+        <aside class="info">
+          <div class="pill magnetic fade-in">️<center> Compact</center></div>
+          <div class="pill magnetic fade-in">️<center> Portable</center></div>
+          <div class="pill magnetic fade-in">️<center> Easy to use</center></div>
+
+          <div style="margin-top:18px;padding:18px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);" class="fade-in">
+            <h3 style="margin-top:0">Transforming Measurement</h3>
+            <p class="muted">"Things done well and with a care, are better than hurried deeds." — King Henry V</p>
+            <button class="cta liquid-button magnetic" id="toggle-motion" style="margin-top:8px">Toggle motion</button>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <div class="bubble b1"></div>
+    <div class="bubble b2"></div>
+    <div class="bubble b3"></div>
+
+    <div class="ocean" aria-hidden="true">
+      <svg class="waves" viewBox="0 0 1440 320" preserveAspectRatio="none" style="width:100%;height:240px;display:block;">
+        <defs>
+          <linearGradient id="g1" x1="0" x2="1">
+            <stop offset="0%" stop-color="#00a2d1" stop-opacity="0.18" />
+            <stop offset="100%" stop-color="#033a5b" stop-opacity="0.22" />
+          </linearGradient>
+        </defs>
+        <path fill="url(#g1)" d="M0,160 C200,220 400,80 720,160 C1040,240 1200,120 1440,160 L1440,320 L0,320 Z">
+        </path>
+        <path fill="#062c45" opacity="0.12" d="M0,200 C220,120 420,260 720,210 C1020,160 1220,230 1440,200 L1440,320 L0,320 Z"></path>
+      </svg>
+    </div>
+
+    <!--FOOTER WITH ANIMATED GRADIENT -->
+    <footer class="gradient-footer">
+        <div class="footer-container">
+            <div class="footer-content">
+<div class="footer-column">
+    <div class="footer-brand-shop-row">
+        <div class="footer-brand">
+            <div class="logo">ST</div>
+            <div class="footer-brand-text">
+                <h3 class="animated-text">Selfietape</h3>
+                <div class="muted">"Accuracy in every inch"</div>
+            </div>
+        </div>
+        <h3 class="footer-shop-title">Shop</h3>
+    </div>
+    <ul class="footer-links">
+        <li><a href="#">Accurate Tape <span class="dropdown-icon">▼</span></a></li>
+        <li><a href="#">All Products <span class="dropdown-icon">▼</span></a></li>
+        <li><a href="#">FAQs</a></li>
+    </ul>
+</div>
+    </ul>
+               
+                <div class="footer-column">
+                    <h3>Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us <span class="dropdown-icon">▼</span></a></li>
+                        <li><a href="#">Our Team <span class="dropdown-icon">▼</span></a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Blog <span class="dropdown-icon">▼</span></a></li>
+                        <li><a href="#">Emergency Tips <span class="dropdown-icon">▼</span></a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Connect</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><span style="margin-right: 8px;">😊</span> Customer Support</a></li>
+                        <li><a href="#"><span style="margin-right: 8px;">👍</span> Feedback</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="copyright">
+                    © 2025 SCALORA All rights reserved.
+                </div>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Services</a>
+                </div>
+            </div>
+        </div>
+    </footer>                         
+  </div>
+
+  <!-- Custom circular cursor + interactions -->
+  <div class="cursor" id="cursor"><div class="dot"></div></div>
+  <div class="pulse" id="pulse"></div>
+
+   <script>
+(function(){
+  const cursor = document.getElementById('cursor');
+  const pulseContainer = document.getElementById('pulse');
+  let mouseX = window.innerWidth/2, mouseY = window.innerHeight/2;
+  let posX = mouseX, posY = mouseY;
+  let raf = null;
+
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  // NEW: Particle system
+  function createParticles() {
+    const particlesContainer = document.getElementById('particles');
+    const particleCount = 50;
+    
+    for (let i = 0; i < particleCount; i++) {
+      const particle = document.createElement('div');
+      particle.classList.add('particle');
+      
+      // Random properties
+      const size = Math.random() * 5 + 2;
+      const left = Math.random() * 100;
+      const animationDuration = Math.random() * 20 + 10;
+      const animationDelay = Math.random() * 5;
+      
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      particle.style.left = `${left}%`;
+      particle.style.animationDuration = `${animationDuration}s`;
+      particle.style.animationDelay = `${animationDelay}s`;
+      
+      particlesContainer.appendChild(particle);
+    }
+  }
+  
+  // NEW: Scroll animation for fade-in elements
+  function handleScrollAnimations() {
+    const fadeElements = document.querySelectorAll('.fade-in');
+    
+    fadeElements.forEach(element => {
+      const elementTop = element.getBoundingClientRect().top;
+      const elementVisible = 150;
+      
+      if (elementTop < window.innerHeight - elementVisible) {
+        element.classList.add('visible');
+      }
+    });
+  }
+  
+  // NEW: Particle trail effect
+  function createParticleTrail(x, y) {
+    const trail = document.createElement('div');
+    trail.classList.add('particle-trail');
+    
+    const size = Math.random() * 10 + 5;
+    trail.style.width = `${size}px`;
+    trail.style.height = `${size}px`;
+    trail.style.left = `${x}px`;
+    trail.style.top = `${y}px`;
+    
+    document.body.appendChild(trail);
+    
+    setTimeout(() => {
+      trail.remove();
+    }, 600);
+  }
+
+  // follow loop with slight lag
+  function loop(){
+    posX += (mouseX - posX) * 0.18;
+    posY += (mouseY - posY) * 0.18;
+    cursor.style.transform = `translate(${posX}px, ${posY}px) translate(-50%, -50%)`;
+    raf = requestAnimationFrame(loop);
+  }
+  raf = requestAnimationFrame(loop);
+
+  // mouse move
+  window.addEventListener('mousemove', e=>{
+    mouseX = e.clientX; mouseY = e.clientY;
+    cursor.classList.remove('hidden');
+    
+    // : Create particle trail
+    if (Math.random() > 0.7) {
+      createParticleTrail(e.clientX, e.clientY);
+    }
+  });
+
+  window.addEventListener('mouseleave', ()=>cursor.classList.add('hidden'));
+  window.addEventListener('mouseenter', ()=>cursor.classList.remove('hidden'));
+
+  // CLICK PULSE: creates multiple fading pulses
+  window.addEventListener('click', (e)=>{
+    for(let i=0; i<2; i++){ // create 2 pulses for better effect
+      const pulse = document.createElement('div');
+      pulse.className = 'pulse';
+      document.body.appendChild(pulse);
+
+      pulse.style.left = e.clientX + 'px';
+      pulse.style.top = e.clientY + 'px';
+      pulse.style.width = '10px';
+      pulse.style.height = '10px';
+      pulse.style.opacity = '0.18';
+      pulse.style.background = 'radial-gradient(circle, rgba(255,209,102,0.18), transparent 60%)';
+      pulse.style.transition = 'width 420ms cubic-bezier(.2,.9,.3,1), height 420ms cubic-bezier(.2,.9,.3,1), opacity 420ms linear, transform 420ms ease-out';
+      pulse.style.position = 'fixed';
+      pulse.style.pointerEvents = 'none';
+      pulse.style.borderRadius = '50%';
+      pulse.style.zIndex = '9998';
+
+      requestAnimationFrame(()=>{
+        pulse.style.width = '220px';
+        pulse.style.height = '220px';
+        pulse.style.opacity = '0';
+        pulse.style.transform = 'translate(-50%, -50%)';
+      });
+
+      setTimeout(()=>pulse.remove(), 450); // remove after animation
+    }
+  });
+
+  // interactive expansion on links / buttons
+  const hoverables = 'a,button,input,textarea,select,[role="button"]';
+  document.addEventListener('mouseover', e=>{
+    if(e.target.closest(hoverables)){
+      cursor.classList.add('big');
+      cursor.style.transitionTimingFunction = 'cubic-bezier(.18,.9,.3,1)';
+    }
+  });
+  document.addEventListener('mouseout', e=>{
+    if(e.target.closest(hoverables)){
+      cursor.classList.remove('big');
+    }
+  });
+
+  // keyboard toggle for motion
+  let motionOn = true;
+  function toggleMotion(state){
+    motionOn = state === undefined ? !motionOn : !!state;
+    const bubbles = document.querySelectorAll('.bubble');
+    bubbles.forEach((b,i)=> b.style.animationPlayState = motionOn ? 'running' : 'paused');
+    document.body.style.animationPlayState = motionOn ? 'running' : 'paused';
+    
+    // : Toggle particles
+    const particles = document.querySelectorAll('.particle');
+    particles.forEach(p => p.style.animationPlayState = motionOn ? 'running' : 'paused');
+  }
+  document.getElementById('toggle-motion').addEventListener('click', ()=>toggleMotion());
+  window.addEventListener('keydown',(e)=>{ if(e.code==='Space') { e.preventDefault(); toggleMotion(); } });
+
+  if(prefersReduced){
+    toggleMotion(false);
+  }
+
+  // touch fallback:  to---show a subtle cursor on touchstart and hide after
+  window.addEventListener('touchstart',(e)=>{
+    cursor.classList.remove('hidden');
+    const t = e.touches[0]; mouseX = t.clientX; mouseY = t.clientY;
+    setTimeout(()=>cursor.classList.add('hidden'), 1500);
+  });
+
+  // : Initialize effects
+  createParticles();
+  window.addEventListener('scroll', handleScrollAnimations);
+  handleScrollAnimations(); // Check on load
+
+  // to: Add typing effect to hero text
+  const heroText = document.querySelector('.hero h2');
+  if (heroText) {
+    heroText.classList.add('typing');
+  }
+
+  // clean up
+  window.addEventListener('unload', ()=> cancelAnimationFrame(raf));
+})();
+</script>
+
+</body>
+</html>

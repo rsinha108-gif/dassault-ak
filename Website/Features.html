@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Features - SelfieTape Precision Measuring Tools</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-1: #05294a;    /* deep sea */
+            --bg-2: #046582;    /* turquoise */
+            --accent: #ffd166;  /* warm highlight */
+            --glass: rgba(255,255,255,0.06);
+            --card: rgba(255,255,255,0.04);
+        }
+
+        /* Reset + base */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { height: 100%; }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+            color: #e6f7ff;
+            background: radial-gradient(1200px 600px at 10% 10%, rgba(4,101,130,0.18), transparent 5%), 
+                        linear-gradient(180deg, var(--bg-1), var(--bg-2));
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            cursor: none; /* we'll draw a custom circular cursor */
+        }
+
+        /* Page layout */
+        .wrap { min-height: 100vh; display: flex; flex-direction: column; }
+        header {
+            padding: 40px 6vw 30px 6vw;
+            display: flex; align-items: center; justify-content: space-between; gap: 20px;
+        }
+        .brand { display: flex; align-items: center; gap: 14px; }
+        .logo {
+            width: 54px; height: 54px; border-radius: 12px; 
+            background: linear-gradient(135deg, #03a9f4, #00bcd4); 
+            display: flex; align-items: center; justify-content: center; 
+            font-weight: 800; color: white; 
+            box-shadow: 0 6px 18px rgba(2,40,60,0.45);
+        }
+        h1 { font-family: 'Playfair Display', serif; margin: 0; font-size: clamp(20px, 3.2vw, 34px); letter-spacing: -0.02em; }
+        nav { display: flex; gap: 18px; align-items: center; }
+        nav a { color: rgba(230,247,255,0.9); text-decoration: none; font-weight: 600; padding: 8px 12px; border-radius: 10px; }
+        nav a:hover { background: rgba(255,255,255,0.03); }
+        nav a.active { background: rgba(255,255,255,0.08); color: var(--accent); }
+
+        /* Features Hero */
+        .features-hero {
+            padding: 40px 6vw 60px 6vw;
+            text-align: center;
+            position: relative;
+        }
+        .features-hero h2 {
+            font-size: clamp(28px, 4.5vw, 48px);
+            margin: 0 0 16px 0;
+            font-family: 'Playfair Display', serif;
+        }
+        .features-hero p {
+            max-width: 700px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+            color: rgba(230,247,255,0.85);
+            font-size: 18px;
+        }
+
+        /* Product Spotlight */
+        .product-spotlight {
+            padding: 60px 6vw;
+            background: rgba(255,255,255,0.02);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .spotlight-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .spotlight-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        .tape-container {
+            width: 400px;
+            height: 400px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .tape-body {
+            width: 320px;
+            height: 320px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #1a3a5f, #0a2540);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 12px solid #0c2c4a;
+            transform: rotate(-5deg);
+        }
+        .tape-screen {
+            width: 260px;
+            height: 260px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #0a2540, #051a30);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: var(--accent);
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+        .tape-screen::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 30%, rgba(255,209,102,0.1), transparent 70%);
+        }
+        .tape-brand {
+            font-size: 14px;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+        .tape-status {
+            font-size: 12px;
+            color: rgba(255,255,255,0.7);
+            margin-top: 5px;
+        }
+        .tape-clip {
+            position: absolute;
+            width: 60px;
+            height: 100px;
+            background: linear-gradient(to bottom, #2a2a2a, #1a1a1a);
+            border-radius: 8px;
+            z-index: -1;
+            left: -40px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .tape-blade {
+            position: absolute;
+            width: 200px;
+            height: 40px;
+            background: linear-gradient(90deg, #e6e6e6, #cccccc);
+            border-radius: 4px;
+            z-index: -1;
+            right: -180px;
+            top: 50%;
+            transform: translateY(-50%);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .tape-blade::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 9px,
+                #000 9px,
+                #000 10px
+            );
+            border-radius: 4px;
+        }
+        .tape-feature {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .tape-feature:hover {
+            background: rgba(255,255,255,0.1);
+            transform: scale(1.1);
+        }
+        .feature-1 { top: 30px; left: 50%; transform: translateX(-50%); }
+        .feature-2 { top: 90px; right: 40px; }
+        .feature-3 { bottom: 90px; right: 40px; }
+        .feature-4 { bottom: 30px; left: 50%; transform: translateX(-50%); }
+        .feature-5 { bottom: 90px; left: 40px; }
+        .feature-6 { top: 90px; left: 40px; }
+
+        .spotlight-content h3 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            font-family: 'Playfair Display', serif;
+        }
+        .spotlight-content p {
+            margin-bottom: 25px;
+            line-height: 1.6;
+            color: rgba(230,247,255,0.85);
+        }
+        .product-specs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 25px 0;
+        }
+        .spec-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .spec-icon {
+            width: 24px;
+            height: 24px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+        }
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 24px;
+            border-radius: 12px;
+            background: linear-gradient(90deg, var(--accent), #ffb347);
+            color: #002029;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 0 8px 24px rgba(255,153,51,0.12);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(255,153,51,0.2);
+        }
+
+        /* Features Grid */
+        .features-section {
+            padding: 80px 6vw;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 50px;
+            font-family: 'Playfair Display', serif;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .feature-card {
+            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(2,30,50,0.45);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255,255,255,0.03);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(2,30,50,0.6);
+        }
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(3,169,244,0.2), rgba(0,188,212,0.2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        .feature-card h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        .feature-card p {
+            color: rgba(230,247,255,0.75);
+            line-height: 1.6;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            padding: 80px 6vw;
+            background: rgba(255,255,255,0.02);
+        }
+        .steps-container {
+            display: flex;
+            justify-content: space-between;
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .steps-container::before {
+            content: '';
+            position: absolute;
+            top: 40px;
+            left: 50px;
+            right: 50px;
+            height: 2px;
+            background: rgba(255,255,255,0.1);
+            z-index: 1;
+        }
+        .step {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            flex: 1;
+            padding: 0 15px;
+        }
+        .step-number {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), #ffb347);
+            color: #002029;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 auto 20px;
+            box-shadow: 0 8px 20px rgba(255,153,51,0.2);
+        }
+        .step h4 {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        .step p {
+            color: rgba(230,247,255,0.75);
+            font-size: 14px;
+        }
+
+        /* Comparison Section */
+        .comparison {
+            padding: 80px 6vw;
+        }
+        .comparison-table {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.02);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .table-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .table-row.header {
+            background: rgba(255,255,255,0.05);
+            font-weight: 700;
+        }
+        .table-cell {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .table-cell:first-child {
+            justify-content: flex-start;
+        }
+        .checkmark {
+            color: var(--accent);
+            font-weight: 700;
+        }
+        .x-mark {
+            color: rgba(255,255,255,0.3);
+        }
+
+        /* Wave footer + decorative */
+        .ocean { position: relative; height: 240px; margin-top: auto; }
+        .waves { position: absolute; left: 0; right: 0; bottom: 0; }
+
+        /* Floating bubbles */
+        .bubble { position: absolute; border-radius: 50%; opacity: 0.18; mix-blend-mode: screen; }
+        .bubble.b1 { width: 140px; height: 140px; left: 4vw; top: 40vh; background: linear-gradient(180deg, #7be7ff55, #035a7a55); animation: floaty 8s ease-in-out infinite; }
+        .bubble.b2 { width: 90px; height: 90px; left: 28vw; top: 30vh; background: linear-gradient(180deg, #64d6ff44, #03788a33); animation: floaty 10s ease-in-out infinite; animation-delay: 0.6s; }
+        .bubble.b3 { width: 60px; height: 60px; left: 70vw; top: 20vh; background: linear-gradient(180deg, #aaffff33, #036b8b33); animation: floaty 12s ease-in-out infinite; animation-delay: 1.4s; }
+
+        @keyframes floaty { 
+            0% { transform: translateY(0); } 
+            50% { transform: translateY(-22px); } 
+            100% { transform: translateY(0); } 
+        }
+
+        /* Footer */
+        footer { padding: 28px 6vw; color: rgba(230,247,255,0.75); display: flex; justify-content: space-between; align-items: center; }
+
+        /* Responsive tweaks */
+        @media (max-width: 900px) {
+            .spotlight-container { grid-template-columns: 1fr; }
+            .steps-container { flex-direction: column; gap: 40px; }
+            .steps-container::before { display: none; }
+            .product-specs { grid-template-columns: 1fr; }
+            .table-row { grid-template-columns: 1fr 1fr; }
+            .table-row.header .table-cell:last-child { display: none; }
+            .table-row .table-cell:last-child { display: none; }
+            nav { display: none; }
+            .tape-container {
+                width: 300px;
+                height: 300px;
+            }
+            .tape-body {
+                width: 240px;
+                height: 240px;
+            }
+            .tape-screen {
+                width: 200px;
+                height: 200px;
+            }
+            .tape-blade {
+                width: 150px;
+                right: -130px;
+            }
+        }
+
+        /* --- Cursor styles --- */
+        .cursor {
+            position: fixed; left: 0; top: 0; transform: translate(-50%, -50%); 
+            width: 36px; height: 36px; border-radius: 50%; pointer-events: none; 
+            z-index: 9999; mix-blend-mode: screen; backdrop-filter: blur(2px);
+            display: flex; align-items: center; justify-content: center; 
+            transition: width .12s ease, height .12s ease, opacity .12s ease, transform .12s ease;
+            border: 2px solid rgba(255,255,255,0.14); 
+            background: radial-gradient(circle at 40% 30%, rgba(255,255,255,0.12), rgba(0,0,0,0.1));
+            box-shadow: 0 6px 18px rgba(2,40,60,0.45);
+        }
+        .cursor .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 4px 10px rgba(255,209,102,0.18); }
+        .cursor.hidden { opacity: 0; }
+        .cursor.big { width: 86px; height: 86px; }
+
+        /* clickable feedback area */
+        .pulse { position: fixed; border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); opacity: 0; }
+
+        /* small utility */
+        .muted { opacity: 0.8; font-size: 14px; }
+		
+        /* NEW: Animated gradient background for footer */
+        .gradient-footer {
+            position: relative;
+            background: linear-gradient(125deg, rgb(5, 7, 20), rgb(10, 17, 40) 25%, rgb(15, 31, 75) 50%, rgb(26, 11, 46) 75%, rgb(10, 10, 10)) 0% 0% / 400% 400%;
+            animation: gradientShift 5s ease infinite;
+            padding: 40px 0 20px;
+            margin-top: auto;
+            color: white;
+        }
+        
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 0%;
+            }
+            50% {
+                background-position: 100% 100%;
+            }
+            100% {
+                background-position: 0% 0%;
+            }
+        }
+        
+        /* Footer container */
+        .footer-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-column h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 8px;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background-color: #3498db;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            text-decoration: none;
+            color: #ddd;
+            font-size: 15px;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-links a:hover {
+            color: #ffd166; /* Using your accent color for hover */
+        }
+        
+        .dropdown-icon {
+            margin-left: 5px;
+            font-size: 12px;
+            color: #aaa;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .copyright {
+            color: #ccc;
+            font-size: 14px;
+        }
+        
+        .footer-bottom-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .footer-bottom-links a {
+            text-decoration: none;
+            color: #ccc;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+        
+        .footer-bottom-links a:hover {
+            color: #ffd166; /* Using your accent color for hover */
+        }
+        
+        .gradient-footer {
+            padding: 40px 0 20px !important; /* Remove left/right padding */
+        }
+
+        .footer-container {
+            padding: 0 20px !important; /* Adjust this value as needed */
+            max-width: 100% !important;
+        }
+
+        /* Logo in footer */
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .footer-logo .logo {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #03a9f4, #00bcd4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: white;
+            font-size: 14px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .footer-bottom-links {
+                justify-content: center;
+                width: 100%;
+            }
+        }
+        
+        /* Footer brand styling */
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .footer-brand-text h3 {
+            margin: 0;
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            letter-spacing: -0.02em;
+        }
+
+        .footer-brand-text .muted {
+            opacity: 0.8;
+            font-size: 12px;
+            margin-top: 2px;
+        }
+
+        .footer-brand-shop-row {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .footer-brand-text h3 {
+            margin: 0;
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            letter-spacing: -0.02em;
+        }
+
+        .footer-brand-text .muted {
+            opacity: 0.8;
+            font-size: 12px;
+            margin-top: 2px;
+        }
+
+        .footer-shop-title {
+            margin: 0 !important;
+        }
+        
+        /* --- Cursor styles --- */
+        .cursor{
+            position:fixed;left:0;top:0;transform:translate(-50%,-50%);width:36px;height:36px;border-radius:50%;pointer-events:none;z-index:9999;mix-blend-mode:screen;backdrop-filter: blur(2px);
+            display:flex;align-items:center;justify-content:center;transition:width .12s ease,height .12s ease,opacity .12s ease,transform .12s ease;
+            border:2px solid rgba(255,255,255,0.14);background:radial-gradient(circle at 40% 30%, rgba(255,255,255,0.12), rgba(0,0,0,0.1));
+            box-shadow:0 6px 18px rgba(2,40,60,0.45);
+        }
+        .cursor .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 4px 10px rgba(255,209,102,0.18)}
+        .cursor.hidden{opacity:0}
+        .cursor.big{width:86px;height:86px}
+
+        /* clickable feedback area */
+        .pulse{position:fixed;border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:0}
+
+        /* small utility */
+        .muted{opacity:0.8;font-size:14px}
+        
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Creates two equal-width columns */
+            column-gap: 20px;
+        }
+
+        .div1, .div2 {
+            padding: 10px;
+            border: 0px solid black;
+        }
+        
+        /* Shift footer content to the right */
+        .footer-content {
+            margin-left: 200px; /* Adjust this value based on how much space you need */
+        }
+
+        /* Or if you want more control, use grid with empty first column */
+        .footer-content {
+            grid-template-columns: 200px repeat(4, 1fr); /* 200px empty space + 4 columns */
+            gap: 30px;
+        }
+
+        /* Alternative: Use padding on first column */
+        .footer-column:first-child {
+            grid-column: 2; /* Start from second column */
+        }
+
+        /* Or create specific layout */
+        .footer-logo-space {
+            grid-column: 1;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .footer-content-columns {
+            grid-column: 2 / span 4;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+
+        /* Add this to your existing CSS - Wave Animation */
+        .waves path {
+            animation: waveMove 8s ease-in-out infinite;
+        }
+
+        @keyframes waveMove {
+            0% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(-30px);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        /* For more realistic layered wave motion */
+        .waves path:first-child {
+            animation: waveMove 12s ease-in-out infinite;
+        }
+
+        .waves path:last-child {
+            animation: waveMove 10s ease-in-out infinite;
+            animation-delay: 0.5s;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <div class="brand">
+                <div class="logo">ST</div>
+                <div>
+                    <h1>SelfieTape</h1>
+                    <div class="muted">Precision measurements for the modern tailor</div>
+                </div>
+            </div>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="Features.html" class="active">Features</a>
+                <a href="Shop.html">Shop</a>
+                <a href="Demo.html">Demo</a>
+                <a href="Team.html">Team</a>
+                <a href="blog.html">Blog</a>
+            </nav>
+        </header>
+
+        <main>
+            <section class="features-hero">
+                <h2>Advanced Precision Features</h2>
+                <p>Discover how SelfieTape's innovative design eliminates measurement errors and revolutionizes the way tailors and seamstresses work.</p>
+            </section>
+
+            <section class="product-spotlight">
+                <div class="spotlight-container">
+                    <div class="spotlight-image">
+                        <div class="tape-container">
+                            <div class="tape-clip"></div>
+                            <div class="tape-body">
+                                <div class="tape-screen">
+                                    <div class="tape-brand">SELFIETAPE PRO</div>
+                                    <div>25.5"</div>
+                                    <div class="tape-status">PERFECT ALIGNMENT</div>
+                                </div>
+                                <div class="tape-feature feature-1" title="Phone Alignment Guide">📱</div>
+                                <div class="tape-feature feature-2" title="Digital Measurement Log">📊</div>
+                                <div class="tape-feature feature-3" title="Visual Confirmation">👁️</div>
+                                <div class="tape-feature feature-4" title="Angle Correction">📐</div>
+                                <div class="tape-feature feature-5" title="Solo Operation">👤</div>
+                                <div class="tape-feature feature-6" title="Client Database">👔</div>
+                            </div>
+                            <div class="tape-blade"></div>
+                        </div>
+                    </div>
+                    <div class="spotlight-content">
+                        <h3>SelfieTape Pro</h3>
+                        <p>SelfieTape combines guided measurement and visual confirmation to eliminate common errors. It helps you align correctly, measure accurately, and document each measurement for future reference. The result is a clean, repeatable process you can trust—every time.</p>
+                        
+                        <div class="product-specs">
+                            <div class="spec-item">
+                                <div class="spec-icon">📱</div>
+                                <span>Phone-guided alignment</span>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-icon">👁️</div>
+                                <span>Visual confirmation</span>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-icon">📊</div>
+                                <span>Digital measurement log</span>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-icon">👤</div>
+                                <span>Solo operation capable</span>
+                            </div>
+                        </div>
+                        
+                        <button class="cta-button">Add to Cart - $79.99</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="features-section">
+                <h2 class="section-title">Core Precision Features</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">📱</div>
+                        <h3>Phone Alignment Guide</h3>
+                        <p>Use your smartphone camera as a precision alignment tool. See exactly when the tape measure is perfectly straight or following body contours.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">👁️</div>
+                        <h3>Visual Confirmation</h3>
+                        <p>Capture each measurement with a photo reference. Eliminate "close enough" measurements with photographic proof of every number.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>Digital Measurement Log</h3>
+                        <p>Automatically save measurements with timestamps and client notes. Build searchable archives for repeat customers and alterations tracking.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📐</div>
+                        <h3>Angle Correction</h3>
+                        <p>Eliminate parallax error and skewed measurements. The phone viewfinder shows exactly when the tape is perpendicular to the measurement point.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">👤</div>
+                        <h3>Solo Operation</h3>
+                        <p>Measure accurately without assistance. Perfect for tailors working alone or when clients can't hold still for measurements.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">👔</div>
+                        <h3>Client Database</h3>
+                        <p>Create permanent records of client measurements with visual references. Perfect for alterations, custom fittings, and repeat business.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="how-it-works">
+                <h2 class="section-title">How It Works</h2>
+                <div class="steps-container">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <h4>Attach & Align</h4>
+                        <p>Clip the SelfieTape to your starting point and use your phone's camera to ensure perfect alignment.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <h4>Extend & View</h4>
+                        <p>Pull the tape while watching your phone screen to maintain the correct angle and alignment.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <h4>Capture & Save</h4>
+                        <p>Take a photo of the measurement. The image with clear numbers is saved to your client's file.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <h4>Repeat Perfectly</h4>
+                        <p>Use your photo log for precise alterations and fittings. The same perfect measurement every time.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="comparison">
+                <h2 class="section-title">Why Choose SelfieTape</h2>
+                <div class="comparison-table">
+                    <div class="table-row header">
+                        <div class="table-cell">Feature</div>
+                        <div class="table-cell">Traditional Measuring</div>
+                        <div class="table-cell">SelfieTape</div>
+                    </div>
+                    <div class="table-row">
+                        <div class="table-cell">Solo Accuracy</div>
+                        <div class="table-cell x-mark">Requires assistant</div>
+                        <div class="table-cell checkmark">Perfect solo operation</div>
+                    </div>
+                    <div class="table-row">
+                        <div class="table-cell">Visual Documentation</div>
+                        <div class="table-cell x-mark">Written notes only</div>
+                        <div class="table-cell checkmark">Photo + measurement log</div>
+                    </div>
+                    <div class="table-row">
+                        <div class="table-cell">Angle Correction</div>
+                        <div class="table-cell x-mark">Parallax errors common</div>
+                        <div class="table-cell checkmark">Phone-guided alignment</div>
+                    </div>
+                    <div class="table-row">
+                        <div class="table-cell">Client Records</div>
+                        <div class="table-cell">Paper files</div>
+                        <div class="table-cell checkmark">Digital database</div>
+                    </div>
+                    <div class="table-row">
+                        <div class="table-cell">Repeat Fittings</div>
+                        <div class="table-cell">Re-measure needed</div>
+                        <div class="table-cell checkmark">Exact reference photos</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <div class="bubble b1"></div>
+        <div class="bubble b2"></div>
+        <div class="bubble b3"></div>
+
+        <div class="ocean" aria-hidden="true">
+            <svg class="waves" viewBox="0 0 1440 320" preserveAspectRatio="none" style="width:100%;height:240px;display:block;">
+                <defs>
+                    <linearGradient id="g1" x1="0" x2="1">
+                        <stop offset="0%" stop-color="#00a2d1" stop-opacity="0.18" />
+                        <stop offset="100%" stop-color="#033a5b" stop-opacity="0.22" />
+                    </linearGradient>
+                </defs>
+                <path fill="url(#g1)" d="M0,160 C200,220 400,80 720,160 C1040,240 1200,120 1440,160 L1440,320 L0,320 Z"></path>
+                <path fill="#062c45" opacity="0.12" d="M0,200 C220,120 420,260 720,210 C1020,160 1220,230 1440,200 L1440,320 L0,320 Z"></path>
+            </svg>
+        </div>
+
+        <!--FOOTER WITH ANIMATED GRADIENT -->
+        <footer class="gradient-footer">
+            <div class="footer-container">
+                <div class="footer-content">
+                    <div class="footer-column">
+                        <div class="footer-brand-shop-row">
+                            <div class="footer-brand">
+                                <div class="logo">ST</div>
+                                <div class="footer-brand-text">
+                                    <h3>SelfieTape</h3>
+                                    <div class="muted">Measure with precision</div>
+                                </div>
+                            </div>
+                            <h3 class="footer-shop-title">Shop</h3>
+                        </div>
+                        <ul class="footer-links">
+                            <li><a href="#">SelfieTape Pro <span class="dropdown-icon">▼</span></a></li>
+                            <li><a href="#">All Products <span class="dropdown-icon">▼</span></a></li>
+                            <li><a href="#">FAQs</a></li>
+                        </ul>
+                    </div>
+                   
+                    <div class="footer-column">
+                        <h3>Company</h3>
+                        <ul class="footer-links">
+                            <li><a href="#">Our Story <span class="dropdown-icon">▼</span></a></li>
+                            <li><a href="#">For Studios <span class="dropdown-icon">▼</span></a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h3>Resources</h3>
+                        <ul class="footer-links">
+                            <li><a href="#">Blog <span class="dropdown-icon">▼</span></a></li>
+                            <li><a href="#">Measurement Guides <span class="dropdown-icon">▼</span></a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h3>Connect</h3>
+                        <ul class="footer-links">
+                            <li><a href="#"><span style="margin-right: 8px;">✂️</span> Tailor Support</a></li>
+                            <li><a href="#"><span style="margin-right: 8px;">📐</span> Become an Ambassador</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="footer-bottom">
+                    <div class="copyright">
+                        © 2025 SELFIETAPE. Precision tools for professionals.
+                    </div>
+                    <div class="footer-bottom-links">
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                    </div>
+                </div>
+            </div>
+        </footer>                         
+    </div>
+
+    <!-- Custom circular cursor + interactions -->
+    <div class="cursor" id="cursor"><div class="dot"></div></div>
+    <div class="pulse" id="pulse"></div>
+
+    <script>
+        (function(){
+            const cursor = document.getElementById('cursor');
+            const pulseContainer = document.getElementById('pulse');
+            let mouseX = window.innerWidth/2, mouseY = window.innerHeight/2;
+            let posX = mouseX, posY = mouseY;
+            let raf = null;
+
+            const prefersReduced = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+            // follow loop with slight lag
+            function loop(){
+                posX += (mouseX - posX) * 0.18;
+                posY += (mouseY - posY) * 0.18;
+                cursor.style.transform = `translate(${posX}px, ${posY}px) translate(-50%, -50%)`;
+                raf = requestAnimationFrame(loop);
+            }
+            raf = requestAnimationFrame(loop);
+
+            // mouse move
+            window.addEventListener('mousemove', e=>{
+                mouseX = e.clientX; mouseY = e.clientY;
+                cursor.classList.remove('hidden');
+            });
+
+            window.addEventListener('mouseleave', ()=>cursor.classList.add('hidden'));
+            window.addEventListener('mouseenter', ()=>cursor.classList.remove('hidden'));
+
+            // CLICK PULSE: creates multiple fading pulses
+            window.addEventListener('click', (e)=>{
+                for(let i=0; i<2; i++){ // create 2 pulses for better effect
+                    const pulse = document.createElement('div');
+                    pulse.className = 'pulse';
+                    document.body.appendChild(pulse);
+
+                    pulse.style.left = e.clientX + 'px';
+                    pulse.style.top = e.clientY + 'px';
+                    pulse.style.width = '10px';
+                    pulse.style.height = '10px';
+                    pulse.style.opacity = '0.18';
+                    pulse.style.background = 'radial-gradient(circle, rgba(255,209,102,0.18), transparent 60%)';
+                    pulse.style.transition = 'width 420ms cubic-bezier(.2,.9,.3,1), height 420ms cubic-bezier(.2,.9,.3,1), opacity 420ms linear, transform 420ms ease-out';
+                    pulse.style.position = 'fixed';
+                    pulse.style.pointerEvents = 'none';
+                    pulse.style.borderRadius = '50%';
+                    pulse.style.zIndex = '9998';
+
+                    requestAnimationFrame(()=>{
+                        pulse.style.width = '220px';
+                        pulse.style.height = '220px';
+                        pulse.style.opacity = '0';
+                        pulse.style.transform = 'translate(-50%, -50%)';
+                    });
+
+                    setTimeout(()=>pulse.remove(), 450); // remove after animation
+                }
+            });
+
+            // interactive expansion on links / buttons
+            const hoverables = 'a,button,input,textarea,select,[role="button"]';
+            document.addEventListener('mouseover', e=>{
+                if(e.target.closest(hoverables)){
+                    cursor.classList.add('big');
+                    cursor.style.transitionTimingFunction = 'cubic-bezier(.18,.9,.3,1)';
+                }
+            });
+            document.addEventListener('mouseout', e=>{
+                if(e.target.closest(hoverables)){
+                    cursor.classList.remove('big');
+                }
+            });
+
+            // keyboard toggle for motion
+            let motionOn = true;
+            function toggleMotion(state){
+                motionOn = state === undefined ? !motionOn : !!state;
+                const bubbles = document.querySelectorAll('.bubble');
+                bubbles.forEach((b,i)=> b.style.animationPlayState = motionOn ? 'running' : 'paused');
+                document.body.style.animationPlayState = motionOn ? 'running' : 'paused';
+            }
+            window.addEventListener('keydown',(e)=>{ if(e.code==='Space') { e.preventDefault(); toggleMotion(); } });
+
+            if(prefersReduced){
+                toggleMotion(false);
+            }
+
+            // touch fallback: show a subtle cursor on touchstart and hide after
+            window.addEventListener('touchstart',(e)=>{
+                cursor.classList.remove('hidden');
+                const t = e.touches[0]; mouseX = t.clientX; mouseY = t.clientY;
+                setTimeout(()=>cursor.classList.add('hidden'), 1500);
+            });
+
+            // Feature interaction for the tape measure
+            document.querySelectorAll('.tape-feature').forEach(feature => {
+                feature.addEventListener('click', function() {
+                    const title = this.getAttribute('title');
+                    const featureDescriptions = {
+                        'Phone Alignment Guide': 'Use your smartphone camera as a precision alignment tool to eliminate parallax error and ensure perfectly straight measurements.',
+                        'Digital Measurement Log': 'Automatically save measurements with photo references, timestamps, and client notes in a searchable digital database.',
+                        'Visual Confirmation': 'Capture photographic proof of every measurement to eliminate "close enough" errors and ensure perfect repeatability.',
+                        'Angle Correction': 'The phone viewfinder shows exactly when the tape is perpendicular to the measurement point, eliminating skewed measurements.',
+                        'Solo Operation': 'Measure accurately without assistance—perfect for tailors working alone or when clients can\'t hold still.',
+                        'Client Database': 'Create permanent records of client measurements with visual references for alterations, custom fittings, and repeat business.'
+                    };
+                    alert(`SelfieTape Feature: ${title}\n\n${featureDescriptions[title]}`);
+                });
+            });
+
+            // CTA button functionality
+            document.querySelector('.cta-button').addEventListener('click', function() {
+                alert('Added SelfieTape Pro to cart! Redirecting to checkout...');
+                // In a real implementation, this would add to cart and redirect
+                // window.location.href = 'Shop.html';
+            });
+
+            // clean up
+            window.addEventListener('unload', ()=> cancelAnimationFrame(raf));
+        })();
+    </script>
+</body>
+</html>
